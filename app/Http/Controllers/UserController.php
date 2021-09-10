@@ -125,4 +125,15 @@ class UserController extends Controller
         // $this->authorize('delete', $user);
         $user->delete();
     }
+
+    public function topup($id ,$amount){
+        if($amount < 0){
+            return "Invalid amount";
+        }
+        $user = User::findOrFail($id);        
+        $user->coin += $amount;
+        $user->save();
+        return $user;
+
+    }
 }
