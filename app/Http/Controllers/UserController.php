@@ -102,6 +102,9 @@ class UserController extends Controller
         if ($request->email !== null) {
             $user->email = $request->email;
         }
+        if ($request->description !== null){
+            $user->description = $request->description;
+        }
         // if ($user->profile != null) {
         //    $user->profile = $request->profile;
         // }
