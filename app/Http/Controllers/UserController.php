@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Hash;
+use Illuminate\Support\Facades\Validator;
 use Illuminate\Support\Str;
 
 class UserController extends Controller
@@ -33,28 +34,18 @@ class UserController extends Controller
     /**
      * Store a newly created resource in storage.
      *
-     * @param  \Illuminate\Http\Request  $request
+     * @param \Illuminate\Http\Request $request
      * @return \Illuminate\Http\Response
      */
     public function store(Request $request)
     {
-        $user = new User;
-        $user->username = $request->username;
-        $user->password = Hash::make($request->password);
-        $user->name = $request->name;
-        // $user->profile = $request->profile;
-        $user->email = $request->email;
-        $user->email_verified_at = now();
-        $user->remember_token = Str::random(10);
-        $user->save();
-
-        return $user;
+        //create in Auth register
     }
 
     /**
      * Display the specified resource.
      *
-     * @param  int  $id
+     * @param int $id
      * @return \Illuminate\Http\Response
      */
     public function show($id)
@@ -66,7 +57,7 @@ class UserController extends Controller
     /**
      * Show the form for editing the specified resource.
      *
-     * @param  int  $id
+     * @param int $id
      * @return \Illuminate\Http\Response
      */
     public function edit($id)
@@ -77,8 +68,8 @@ class UserController extends Controller
     /**
      * Update the specified resource in storage.
      *
-     * @param  \Illuminate\Http\Request  $request
-     * @param  int  $id
+     * @param \Illuminate\Http\Request $request
+     * @param int $id
      * @return \Illuminate\Http\Responsep
      */
     public function update(Request $request, $id)
@@ -102,7 +93,7 @@ class UserController extends Controller
         if ($request->email !== null) {
             $user->email = $request->email;
         }
-        if ($request->description !== null){
+        if ($request->description !== null) {
             $user->description = $request->description;
         }
         // if ($user->profile != null) {
@@ -116,7 +107,7 @@ class UserController extends Controller
     /**
      * Remove the specified resource from storage.
      *
-     * @param  int  $id
+     * @param int $id
      * @return \Illuminate\Http\Response
      */
     public function destroy($id)
@@ -126,14 +117,14 @@ class UserController extends Controller
         $user->delete();
     }
 
-    public function topup($id ,$amount){
-        if($amount < 0){
+    public function topup($id, $amount)
+    {
+        if ($amount < 0) {
             return "Invalid amount";
         }
-        $user = User::findOrFail($id);        
+        $user = User::findOrFail($id);
         $user->coin += $amount;
         $user->save();
         return $user;
-
     }
 }
