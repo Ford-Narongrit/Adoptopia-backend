@@ -13,4 +13,8 @@ class Adopt extends Model
     protected $casts = [
         'image' => 'array'
     ];
+
+    public function user(){
+        return $this->hasMany(User::class);
+    }
 }

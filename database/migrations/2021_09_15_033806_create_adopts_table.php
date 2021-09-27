@@ -22,6 +22,9 @@ class CreateAdoptsTable extends Migration
             $table->unsignedBigInteger('category');
             $table->timestamps();
             $table->softDeletes();
+
+            $table->foreign('user_id')->references('id')->on('users');
+            //TODO catagory user_id 
         });
     }
 

@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Notification;
 use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Hash;
@@ -130,10 +131,15 @@ class UserController extends Controller
         if($amount < 0){
             return "Invalid amount";
         }
-        $user = User::findOrFail($id);        
+        $user = User::findOrFail($id);
         $user->coin += $amount;
         $user->save();
         return $user;
 
+    }
+
+    public function notification($id){
+        $user = Notification::where('user_id', $id)->orderBy('created_at' , 'desc')->get();
+        return $user;
     }
 }
