@@ -18,13 +18,13 @@ class CreateAdoptsTable extends Migration
             $table->json('image');
             $table->string('name');
             $table->string('agreement');
-            $table->unsignedBigInteger('user');
+            $table->unsignedBigInteger('user_id');
             $table->unsignedBigInteger('category');
             $table->timestamps();
             $table->softDeletes();
 
             $table->foreign('user_id')->references('id')->on('users');
-            //TODO catagory user_id 
+            //TODO catagory user_id
         });
     }
 

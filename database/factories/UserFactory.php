@@ -25,7 +25,7 @@ class UserFactory extends Factory
         $name = $this->faker->name();
         return [
             'username' => $name . "_" . $this->faker->unique()->randomDigit,
-            'password' => bcrypt('secret'), // password
+            'password' => bcrypt('secret123'), // password
             'name' => $name,
             'profile' => $this->faker->imageUrl($width = 200, $height = 200),
             'description' => $this->faker->sentence(30),
