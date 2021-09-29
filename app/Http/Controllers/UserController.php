@@ -5,12 +5,10 @@ namespace App\Http\Controllers;
 use App\Models\Notification;
 use App\Models\User;
 use Illuminate\Http\Request;
-use Illuminate\Support\Facades\Hash;
-use Illuminate\Support\Facades\Validator;
-use Illuminate\Support\Str;
 
 class UserController extends Controller
 {
+
     /**
      * Display a listing of the resource.
      *
@@ -20,16 +18,6 @@ class UserController extends Controller
     {
         $user = User::all();
         return $user;
-    }
-
-    /**
-     * Show the form for creating a new resource.
-     *
-     * @return \Illuminate\Http\Response
-     */
-    public function create()
-    {
-        //
     }
 
     /**
@@ -56,17 +44,6 @@ class UserController extends Controller
     }
 
     /**
-     * Show the form for editing the specified resource.
-     *
-     * @param int $id
-     * @return \Illuminate\Http\Response
-     */
-    public function edit($id)
-    {
-        //$user = User::findOrFail($id);
-    }
-
-    /**
      * Update the specified resource in storage.
      *
      * @param \Illuminate\Http\Request $request
@@ -75,34 +52,7 @@ class UserController extends Controller
      */
     public function update(Request $request, $id)
     {
-        $user = User::findOrFail($id);
-        // $this->authorize('update', $user);
-
-        // $request->validate([
-        //     'name' => ['required'],
-        //     'email' => ['required', 'email', "unique:users,email,{$id}"]
-        // ]);
-        if ($request->name !== null) {
-            $user->name = $request->name;
-        }
-        if ($request->username !== null) {
-            $user->username = $request->username;
-        }
-        if ($request->password !== null) {
-            $user->password = Hash::make($request->password);
-        }
-        if ($request->email !== null) {
-            $user->email = $request->email;
-        }
-        if ($request->description !== null) {
-            $user->description = $request->description;
-        }
-        // if ($user->profile != null) {
-        //    $user->profile = $request->profile;
-        // }
-        $user->save();
-
-        return $user;
+        //update in Auth update
     }
 
     /**
@@ -129,8 +79,9 @@ class UserController extends Controller
         return $user;
     }
 
-    public function notification($id){
-        $user = Notification::where('user_id', $id)->orderBy('created_at' , 'desc')->get();
+    public function notification($id)
+    {
+        $user = Notification::where('user_id', $id)->orderBy('created_at', 'desc')->get();
         return $user;
     }
 }
