@@ -15,16 +15,13 @@ class CreateAdoptsTable extends Migration
     {
         Schema::create('adopts', function (Blueprint $table) {
             $table->id();
-            $table->json('image');
             $table->string('name');
             $table->string('agreement');
-            $table->unsignedBigInteger('user');
-            $table->unsignedBigInteger('category');
+            $table->unsignedBigInteger('user_id');
             $table->timestamps();
             $table->softDeletes();
 
             $table->foreign('user_id')->references('id')->on('users');
-            //TODO catagory user_id 
         });
     }
 

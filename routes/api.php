@@ -4,6 +4,7 @@ use App\Http\Controllers\UserController;
 use App\Http\Controllers\AdoptController;
 use App\Http\Controllers\NotificationController;
 use App\Http\Controllers\UploadFileController;
+use App\Http\Controllers\CategoryController;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\Api\AuthController;
@@ -32,6 +33,8 @@ Route::get('/user/notification/{id}' , [UserController::class , 'notification'])
 Route::apiResource('/notification', NotificationController::class);
 
 Route::apiResource('/adopt', AdoptController::class);
+
+Route::apiResource('/category', CategoryController::class);
 
 Route::post('/files/upload/{dir}', [UploadFileController::class, 'store']);
 

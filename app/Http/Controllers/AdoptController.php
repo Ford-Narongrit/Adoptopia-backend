@@ -4,11 +4,19 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use App\Models\Adopt;
+use App\Models\AdoptImage;
+use App\Models\Category;
+use Illuminate\Support\Facades\Storage;
+use Intervention\Image\Facades\Image;
+use Tymon\JWTAuth\Facades\JWTAuth;
 
 class AdoptController extends Controller
 {
+    public function __construct()
+    {
+        $this->middleware('auth:api');
+    }
 
-    //TODO catagory
     public function index()
     {
         $adopts = Adopt::all();
@@ -17,15 +25,45 @@ class AdoptController extends Controller
 
     public function store(Request $request)
     {
+        
         $adopt = new Adopt();
-        $adopt->image = $request->image;
         $adopt->name = $request->name;
         $adopt->agreement = $request->agreement;
-        $adopt->user = $request->user;
-        $adopt->category = 1;
-        $adopt->save();
+        $user = JWTAuth::user();
+        $adopt->user_id = $user->id;
+        $catArr = [];
 
-        return $adopt;
+        foreach($request->category as $category_id){
+            array_push($catArr , $category_id);
+        }
+        $adopt->save();
+        // save in pivot table
+        $adopt->category()->attach($catArr);
+
+
+        $arrImage = [];
+        if($request->hasfile('images')){
+            foreach($request->file('images') as $file){
+                $adoptImage = new AdoptImage();
+                $adoptImage->adopt_id = $adopt->id;
+                $filename = $file->getClientOriginalName();
+                $filename = time() . '-' . str_replace(' ', '', $filename);
+                $path = $file->storeAs("public/adopts", $filename);
+                $adoptImage->path = "/storage/adopts/{$filename}";
+                $fileType = $file->getClientMimeType();
+                $adoptImage->type = $fileType;
+                $fileSize = Storage::size($path);
+                $adoptImage->size = $fileSize;
+                $width = Image::make($file->getRealPath())->width();
+                $adoptImage->width = $width;
+                $height = Image::make($file->getRealPath())->height();
+                $adoptImage->height = $height;
+                $adoptImage->save();
+                array_push($arrImage , $adoptImage);
+            }
+        }
+
+        return "Add adopt success";
     }
 
     public function show($id)
