@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Storage;
+use Intervention\Image\Facades\Image;
 
 class UploadFileController extends Controller
 {
@@ -17,13 +18,16 @@ class UploadFileController extends Controller
             $path = $file->storeAs("public/{$dir}", $filename);
             $fileType = $file->getClientMimeType();
             $fileSize = Storage::size($path);
+            $imgFile = Image::make($file->getRealPath());
             if ($path) {
                 return response()->json([
                     'message' => 'file uploaded',
-                    'file' => $filename,
+                    'filename' => $filename,
                     'path' => "/storage/{$dir}/{$filename}",
                     'size' => $fileSize,
-                    'type' => $fileType
+                    'type' => $fileType,
+                    'heigh' => $imgFile->height(),
+                    'width' => $imgFile->width()
                 ], 200);
             }
         }

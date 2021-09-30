@@ -48,3 +48,8 @@ php artisan storage:link
 composer install
 php artisan serve
 ```
+
+## create JWT
+```bash
+php artisan jwt:secret
+```
