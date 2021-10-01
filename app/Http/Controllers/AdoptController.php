@@ -19,13 +19,14 @@ class AdoptController extends Controller
 
     public function index()
     {
-        $adopts = Adopt::all();
+        $user = JWTAuth::user();
+        $adopts = $user->adopt->load(['adopt_image', 'category'])->sortByDesc('created_at')->toArray();
         return $adopts;
     }
 
     public function store(Request $request)
     {
-        
+
         $adopt = new Adopt();
         $adopt->name = $request->name;
         $adopt->agreement = $request->agreement;
