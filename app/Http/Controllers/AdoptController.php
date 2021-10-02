@@ -20,7 +20,7 @@ class AdoptController extends Controller
     public function index()
     {
         $user = JWTAuth::user();
-        $adopts = $user->adopt->load(['adopt_image', 'category'])->sortByDesc('created_at')->toArray();
+        $adopts = $user->adopt->load(['adopt_image', 'category']);
         return $adopts;
     }
 
@@ -34,8 +34,8 @@ class AdoptController extends Controller
         $adopt->user_id = $user->id;
         $catArr = [];
 
-        foreach($request->category as $category_id){
-            array_push($catArr , $category_id);
+        foreach ($request->category as $category_id) {
+            array_push($catArr, $category_id);
         }
         $adopt->save();
         // save in pivot table
@@ -43,8 +43,8 @@ class AdoptController extends Controller
 
 
         $arrImage = [];
-        if($request->hasfile('images')){
-            foreach($request->file('images') as $file){
+        if ($request->hasfile('images')) {
+            foreach ($request->file('images') as $file) {
                 $adoptImage = new AdoptImage();
                 $adoptImage->adopt_id = $adopt->id;
                 $filename = $file->getClientOriginalName();
@@ -60,7 +60,7 @@ class AdoptController extends Controller
                 $height = Image::make($file->getRealPath())->height();
                 $adoptImage->height = $height;
                 $adoptImage->save();
-                array_push($arrImage , $adoptImage);
+                array_push($arrImage, $adoptImage);
             }
         }
 
@@ -69,20 +69,27 @@ class AdoptController extends Controller
 
     public function show($id)
     {
-        $adopt = Adopt::findOrFail($id);
+        $user = JWTAuth::user();
+        $adopt = $user->adopt->where('id', $id)->first();
+        if ($adopt == null) {
+            return response()->json([
+                'message' => 'this is not the adopt you are looking for.',
+            ], 404);
+        }
+        $adopt->load(['adopt_image', 'category']);
         return $adopt;
     }
 
     public function update(Request $request, $id)
     {
         $adopt = Adopt::findOrFail($id);
-        if ($request->image !== null){
+        if ($request->image !== null) {
             $adopt->image = $request->image;
         }
-        if($request->name !== null){
+        if ($request->name !== null) {
             $adopt->name = $request->name;
         }
-        if($request->agreement !== null){
+        if ($request->agreement !== null) {
             $adopt->agreement = $request->agreement;
         }
         $adopt->save();
