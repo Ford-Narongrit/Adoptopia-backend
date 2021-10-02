@@ -23,7 +23,7 @@ class AdoptController extends Controller
     public function index()
     {
         $user = JWTAuth::user();
-        $adopts = $user->adopt->load(['adopt_image', 'category'])->sortByDesc('created_at')->toArray();
+        $adopts = $user->adopt->load(['adopt_image', 'category']);
         return $adopts;
     }
 
@@ -75,8 +75,15 @@ class AdoptController extends Controller
 
     public function show($id)
     {
-        $adopt = Adopt::findOrFail($id);
-        return new AdoptResource($adopt);
+        $user = JWTAuth::user();
+        $adopt = $user->adopt->where('id', $id)->first();
+        if ($adopt == null) {
+            return response()->json([
+                'message' => 'this is not the adopt you are looking for.',
+            ], 404);
+        }
+        $adopt->load(['adopt_image', 'category']);
+        return $adopt;
     }
 
     public function update(Request $request, $id)
