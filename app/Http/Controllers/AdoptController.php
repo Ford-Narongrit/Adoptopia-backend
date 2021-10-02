@@ -2,11 +2,14 @@
 
 namespace App\Http\Controllers;
 
+use App\Http\Requests\AdoptRequest;
+use App\Http\Resources\AdoptResource;
 use Illuminate\Http\Request;
 use App\Models\Adopt;
 use App\Models\AdoptImage;
 use App\Models\Category;
 use Illuminate\Support\Facades\Storage;
+use Illuminate\Support\Facades\Validator;
 use Intervention\Image\Facades\Image;
 use Tymon\JWTAuth\Facades\JWTAuth;
 
@@ -20,12 +23,15 @@ class AdoptController extends Controller
     public function index()
     {
         $adopts = Adopt::all();
-        return $adopts;
+        return AdoptResource::collection($adopts);
     }
 
-    public function store(Request $request)
+    public function store(AdoptRequest $request)
     {
-        
+        $validator = Validator::make($request->all(), $request->rules(), $request->messages());
+        if ($validator->fails()) {
+            return response()->json($validator->errors());
+        }
         $adopt = new Adopt();
         $adopt->name = $request->name;
         $adopt->agreement = $request->agreement;
@@ -33,8 +39,8 @@ class AdoptController extends Controller
         $adopt->user_id = $user->id;
         $catArr = [];
 
-        foreach($request->category as $category_id){
-            array_push($catArr , $category_id);
+        foreach ($request->category as $category_id) {
+            array_push($catArr, $category_id);
         }
         $adopt->save();
         // save in pivot table
@@ -42,8 +48,8 @@ class AdoptController extends Controller
 
 
         $arrImage = [];
-        if($request->hasfile('images')){
-            foreach($request->file('images') as $file){
+        if ($request->hasfile('images')) {
+            foreach ($request->file('images') as $file) {
                 $adoptImage = new AdoptImage();
                 $adoptImage->adopt_id = $adopt->id;
                 $filename = $file->getClientOriginalName();
@@ -59,7 +65,7 @@ class AdoptController extends Controller
                 $height = Image::make($file->getRealPath())->height();
                 $adoptImage->height = $height;
                 $adoptImage->save();
-                array_push($arrImage , $adoptImage);
+                array_push($arrImage, $adoptImage);
             }
         }
 
@@ -69,19 +75,19 @@ class AdoptController extends Controller
     public function show($id)
     {
         $adopt = Adopt::findOrFail($id);
-        return $adopt;
+        return new AdoptResource($adopt);
     }
 
     public function update(Request $request, $id)
     {
         $adopt = Adopt::findOrFail($id);
-        if ($request->image !== null){
+        if ($request->image !== null) {
             $adopt->image = $request->image;
         }
-        if($request->name !== null){
+        if ($request->name !== null) {
             $adopt->name = $request->name;
         }
-        if($request->agreement !== null){
+        if ($request->agreement !== null) {
             $adopt->agreement = $request->agreement;
         }
         $adopt->save();
@@ -93,4 +99,6 @@ class AdoptController extends Controller
         $adopt = Adopt::findOrFail($id);
         $adopt->delete();
     }
+
+
 }
