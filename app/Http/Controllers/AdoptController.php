@@ -22,8 +22,9 @@ class AdoptController extends Controller
 
     public function index()
     {
-        $adopts = Adopt::all();
-        return AdoptResource::collection($adopts);
+        $user = JWTAuth::user();
+        $adopts = $user->adopt->load(['adopt_image', 'category'])->sortByDesc('created_at')->toArray();
+        return $adopts;
     }
 
     public function store(AdoptRequest $request)

@@ -99,11 +99,11 @@ class AuthController extends Controller
     public function me(Request $request)
     {
         $user = JWTAuth::user();
-        $user->load(['adopt' => function ($query) {
-            $query->orderBy('created_at', "desc");
-        }, 'notification' => function ($query) {
-            $query->orderBy('created_at', "desc");
-        }]);
+//        $user->load(['adopt' => function ($query) {
+//            $query->orderBy('created_at', "desc");
+//        }, 'notification' => function ($query) {
+//            $query->orderBy('created_at', "desc");
+//        }]);
         return response()->json($user);
     }
 
