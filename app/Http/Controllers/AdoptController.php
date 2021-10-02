@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Http\Requests\AdoptRequest;
+use App\Http\Resources\AdoptResource;
 use Illuminate\Http\Request;
 use App\Models\Adopt;
 use App\Models\AdoptImage;
@@ -22,7 +23,7 @@ class AdoptController extends Controller
     public function index()
     {
         $adopts = Adopt::all();
-        return $adopts;
+        return AdoptResource::collection($adopts);
     }
 
     public function store(AdoptRequest $request)
@@ -74,7 +75,7 @@ class AdoptController extends Controller
     public function show($id)
     {
         $adopt = Adopt::findOrFail($id);
-        return $adopt;
+        return new AdoptResource($adopt);
     }
 
     public function update(Request $request, $id)
