@@ -4,6 +4,7 @@ use App\Http\Controllers\UserController;
 use App\Http\Controllers\AdoptController;
 use App\Http\Controllers\NotificationController;
 use App\Http\Controllers\UploadFileController;
+use App\Http\Controllers\Api\PaymentHistoryController;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\Api\AuthController;
@@ -30,6 +31,8 @@ Route::put('/user/topup/{id}/{amount}' , [UserController::class , 'topup']);
 Route::get('/user/notification/{id}' , [UserController::class , 'notification']);
 
 Route::apiResource('/notification', NotificationController::class);
+
+Route::apiResource('/payment-histories', PaymentHistoryController::class);
 
 Route::apiResource('/adopt', AdoptController::class);
 
