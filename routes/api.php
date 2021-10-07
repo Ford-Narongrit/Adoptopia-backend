@@ -8,6 +8,7 @@ use App\Http\Controllers\CategoryController;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\Api\AuthController;
+use App\Http\Controllers\Api\TradeAdopController;
 
 /*
 |--------------------------------------------------------------------------
@@ -35,6 +36,8 @@ Route::apiResource('/notification', NotificationController::class);
 Route::apiResource('/adopt', AdoptController::class);
 
 Route::apiResource('/category', CategoryController::class);
+
+Route::apiResource('/trade-adop', TradeAdopController::class);
 
 Route::post('/files/upload/{dir}', [UploadFileController::class, 'store']);
 
