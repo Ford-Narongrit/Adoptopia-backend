@@ -20,4 +20,9 @@ class Adopt extends Model
     public function category(){
         return $this->belongsToMany(Category::class)->withTimestamps();
     }
+    
+    public function trade_adops()
+    {
+        return $this->hasMany(TradeAdop::class);
+    }
 }

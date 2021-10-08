@@ -10,6 +10,7 @@ use Illuminate\Notifications\Notifiable;
 use Laravel\Sanctum\HasApiTokens;
 use App\Models\Notification;
 use App\Models\Adopt;
+use App\Models\TradeAdop;
 use Tymon\JWTAuth\Contracts\JWTSubject;
 
 class User extends Authenticatable implements JWTSubject
@@ -50,10 +51,17 @@ class User extends Authenticatable implements JWTSubject
     {
         return $this->hasMany(Notification::class);
     }
+    
     public function adopt()
     {
         return $this->hasMany(Adopt::class);
     }
+
+    public function trade_adops()
+    {
+        return $this->hasMany(TradeAdop::class);
+    }
+
     public function getJWTIdentifier()
     {
         return $this->getKey();
