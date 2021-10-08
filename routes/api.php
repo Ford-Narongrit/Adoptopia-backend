@@ -39,6 +39,8 @@ Route::apiResource('/category', CategoryController::class);
 
 Route::apiResource('/trade-adop', TradeAdopController::class);
 
+Route::apiResource('/dta-sug', DtaSug::class);
+
 Route::post('/files/upload/{dir}', [UploadFileController::class, 'store']);
 
 //Auth Route

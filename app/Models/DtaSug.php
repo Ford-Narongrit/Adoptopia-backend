@@ -5,19 +5,15 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
-use App\Models\DtaSug;
 
-class TradeAdop extends Model
+class DtaSug extends Model
 {
     use HasFactory, SoftDeletes;
 
+    public function trade_adops(){
+        return $this->belongsTo(TradeAdop::class);
+    }
     public function user(){
         return $this->belongsTo(User::class);
-    }
-    public function adopt(){
-        return $this->belongsTo(Adopt::class);
-    }
-    public function dta_sugs(){
-        return $this->hasMany(DtaSug::class);
     }
 }
