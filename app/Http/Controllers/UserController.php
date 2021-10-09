@@ -68,13 +68,23 @@ class UserController extends Controller
         $user->delete();
     }
 
-    public function topup($id, $amount)
+    public function deposit($id, $amount)
     {
         if ($amount < 0) {
             return "Invalid amount";
         }
         $user = User::findOrFail($id);
         $user->coin += $amount;
+        $user->save();
+        return $user;
+    }
+    public function withdraw($id, $amount)
+    {
+        $user = User::findOrFail($id);
+        if ($amount > $user->coin) {
+            return "You have not enough coin";
+        }
+        $user->coin -= $amount;
         $user->save();
         return $user;
     }

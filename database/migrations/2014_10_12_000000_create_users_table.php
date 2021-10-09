@@ -21,7 +21,7 @@ class CreateUsersTable extends Migration
             $table->string('profile')->default("/storage/default/profile.jpg");
             $table->string('cover')->default("/storage/default/cover.jpg");
             $table->longText('description')->nullable();
-            $table->bigInteger('coin')->default(0);
+            $table->double('coin')->default(0);
             $table->string('email')->unique();
             $table->timestamp('email_verified_at')->nullable();
             $table->rememberToken();

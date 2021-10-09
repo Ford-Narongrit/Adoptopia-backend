@@ -17,5 +17,6 @@ class DatabaseSeeder extends Seeder
         $this->call(CategorySeeder::class);
         $this->call(AdoptSeeder::class);
         $this->call(NotificationSeeder::class);
+        $this->call(PaymentHistorySeeder::class);
     }
 }

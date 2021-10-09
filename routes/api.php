@@ -4,6 +4,7 @@ use App\Http\Controllers\UserController;
 use App\Http\Controllers\AdoptController;
 use App\Http\Controllers\NotificationController;
 use App\Http\Controllers\UploadFileController;
+use App\Http\Controllers\Api\PaymentHistoryController;
 use App\Http\Controllers\CategoryController;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
@@ -28,11 +29,15 @@ Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
 
 Route::apiResource('/user', UserController::class);
 
-Route::put('/user/topup/{id}/{amount}' , [UserController::class , 'topup']);
+Route::put('/user/deposit/{id}/{amount}' , [UserController::class , 'deposit']);
+
+Route::put('/user/withdraw/{id}/{amount}' , [UserController::class , 'withdraw']);
 
 Route::get('/user/notification/{id}' , [UserController::class , 'notification']);
 
 Route::apiResource('/notification', NotificationController::class);
+
+Route::apiResource('/payment-histories', PaymentHistoryController::class);
 
 Route::apiResource('/adopt', AdoptController::class);
 
@@ -41,6 +46,7 @@ Route::apiResource('/category', CategoryController::class);
 Route::apiResource('/trade-adop', TradeAdopController::class);
 
 Route::apiResource('/trade-coin', TradeCoinController::class);
+Route::apiResource('/dta-sug', DtaSug::class);
 
 Route::post('/files/upload/{dir}', [UploadFileController::class, 'store']);
 
