@@ -22,11 +22,18 @@ class PaymentHistoryFactory extends Factory
      */
     public function definition()
     {
+        $trans_user = $this->faker->boolean(50) ? User::get()->pluck('id')->random() : null;
+        if($trans_user){
+            $status = $this->faker->randomElement(['earn', 'spend']);
+        } else {
+            $status = $this->faker->randomElement(['deposit', 'withdraw']);
+        }
         return [
-            'description' => $this->faker->realText(30),
-            'status' => $this->faker->randomElement(['deposit', 'withdraw']),
+            // 'post_id' => Post::get()->pluck('id')->random(),
+            'status' => $status,
             'amount' => $this->faker->randomFloat($decimals = 2, $min = 500, $max = 15000),
             'user_id' => User::get()->pluck('id')->random(),
+            'trans_user' => $trans_user,
         ];
     }
 }

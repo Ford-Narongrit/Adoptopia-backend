@@ -26,7 +26,9 @@ Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
 
 Route::apiResource('/user', UserController::class);
 
-Route::put('/user/topup/{id}/{amount}' , [UserController::class , 'topup']);
+Route::put('/user/deposit/{id}/{amount}' , [UserController::class , 'deposit']);
+
+Route::put('/user/withdraw/{id}/{amount}' , [UserController::class , 'withdraw']);
 
 Route::get('/user/notification/{id}' , [UserController::class , 'notification']);
 

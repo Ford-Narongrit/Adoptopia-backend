@@ -20,7 +20,7 @@ class CreateUsersTable extends Migration
             $table->string('name');
             $table->string('profile')->nullable();
             $table->longText('description')->nullable();
-            $table->bigInteger('coin')->default(0);
+            $table->double('coin')->default(0);
             $table->string('email')->unique();
             $table->timestamp('email_verified_at')->nullable();
             $table->rememberToken();

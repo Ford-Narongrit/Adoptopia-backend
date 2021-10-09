@@ -28,7 +28,24 @@ class PaymentHistoryController extends Controller
 
     public function store(Request $request)
     {
-        //
+        $paymentHistory = new PaymentHistory();
+        $user = JWTAuth::user();
+        // $paymentHistory->post_id = $request->post_id;
+        $status = $request->status;
+        $amount = floatval($request->amount);
+        if($amount && intval($amount) != $amount){
+            $amount = $amount + 0;
+        }
+        else {
+            $amount = number_format( (float) $request->amount, 2, '.', '');
+        }
+        
+
+        $paymentHistory->trans_user = $request->trans_user;
+        $paymentHistory->status = $status;
+        $paymentHistory->amount = $amount;
+        $paymentHistory->user_id = $user->id;
+        $paymentHistory->save();
     }
 
     public function destroy(PaymentHistory $paymentHistory)

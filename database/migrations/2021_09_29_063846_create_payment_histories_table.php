@@ -15,13 +15,16 @@ class CreatePaymentHistoriesTable extends Migration
     {
         Schema::create('payment_histories', function (Blueprint $table) {
             $table->id();
-            $table->string('description');
-            $table->enum('status', ['deposit', 'withdraw']);
-            $table->float('amount');
+            // $table->unsignedBigInteger('post_id')->nullable();
+            $table->enum('status', ['deposit', 'withdraw', 'earn', 'spend']);
+            $table->double('amount');
             $table->unsignedBigInteger('user_id');
+            $table->unsignedBigInteger('trans_user')->nullable();
             $table->timestamps();
             $table->softDeletes();
             $table->foreign('user_id')->references('id')->on('users');
+            // $table->foreign('trans_user')->references('user_id')->on('trader_coin');
+            // $table->foreign('post_id')->references('id')->on('trader_coin');
         });
     }
 
