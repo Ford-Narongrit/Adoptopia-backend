@@ -62,6 +62,11 @@ class User extends Authenticatable implements JWTSubject
         return $this->hasMany(TradeAdop::class);
     }
 
+    public function trade_coin()
+    {
+        return $this->hasMany(TradeCoin::class);
+    }
+
     public function getJWTIdentifier()
     {
         return $this->getKey();
