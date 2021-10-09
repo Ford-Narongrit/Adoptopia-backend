@@ -4,7 +4,7 @@ use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
 
-class CreateAdoptsTable extends Migration
+class CreateTradeAdopsTable extends Migration
 {
     /**
      * Run the migrations.
@@ -13,15 +13,17 @@ class CreateAdoptsTable extends Migration
      */
     public function up()
     {
-        Schema::create('adopts', function (Blueprint $table) {
+        Schema::create('trade_adops', function (Blueprint $table) {
             $table->id();
-            $table->string('name');
-            $table->string('agreement');
             $table->unsignedBigInteger('user_id');
+            $table->unsignedBigInteger('adopt_id');
+            $table->enum('type', ['ota', 'dta']);
+            $table->enum('status', ['on', 'off']);
             $table->timestamps();
             $table->softDeletes();
 
             $table->foreign('user_id')->references('id')->on('users');
+            $table->foreign('adopt_id')->references('id')->on('adopts');
         });
     }
 
@@ -32,6 +34,6 @@ class CreateAdoptsTable extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('adopts');
+        Schema::dropIfExists('trade_adop');
     }
 }

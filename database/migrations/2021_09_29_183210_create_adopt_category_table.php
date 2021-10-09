@@ -4,7 +4,7 @@ use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
 
-class CreateAdoptsTable extends Migration
+class CreateAdoptCategoryTable extends Migration
 {
     /**
      * Run the migrations.
@@ -13,15 +13,15 @@ class CreateAdoptsTable extends Migration
      */
     public function up()
     {
-        Schema::create('adopts', function (Blueprint $table) {
+        Schema::create('adopt_category', function (Blueprint $table) {
             $table->id();
-            $table->string('name');
-            $table->string('agreement');
-            $table->unsignedBigInteger('user_id');
+            $table->unsignedBigInteger('adopt_id');
+            $table->unsignedBigInteger('category_id');
             $table->timestamps();
-            $table->softDeletes();
 
-            $table->foreign('user_id')->references('id')->on('users');
+            $table->foreign('adopt_id')->references('id')->on('adopts');
+            $table->foreign('category_id')->references('id')->on('categories');
+
         });
     }
 
@@ -32,6 +32,6 @@ class CreateAdoptsTable extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('adopts');
+        Schema::dropIfExists('adopt_category');
     }
 }

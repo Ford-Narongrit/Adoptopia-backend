@@ -10,11 +10,17 @@ class Adopt extends Model
 {
     use HasFactory , SoftDeletes;
 
-    protected $casts = [
-        'image' => 'array'
-    ];
 
     public function user(){
-        return $this->hasMany(User::class);
+        return $this->belongsTo(User::class);
+    }
+    public function adopt_image(){
+        return $this->hasMany(AdoptImage::class);
+    }
+    public function category(){
+        return $this->belongsToMany(Category::class)->withTimestamps();
+    }
+    public function trade_adops(){
+        return $this->hasMany(TradeAdop::class);
     }
 }
