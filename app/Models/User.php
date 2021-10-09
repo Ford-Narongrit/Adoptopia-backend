@@ -9,6 +9,7 @@ use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
 use Laravel\Sanctum\HasApiTokens;
 use App\Models\Notification;
+use App\Models\PaymentHistory;
 use App\Models\Adopt;
 use Tymon\JWTAuth\Contracts\JWTSubject;
 
@@ -49,6 +50,10 @@ class User extends Authenticatable implements JWTSubject
     public function notification()
     {
         return $this->hasMany(Notification::class);
+    }
+    public function paymentHistories()
+    {
+        return $this->hasMany(PaymentHistory::class);
     }
     public function adopt()
     {
