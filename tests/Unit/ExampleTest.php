@@ -8,6 +8,7 @@ class ExampleTest extends TestCase
 {
     /**
      * A basic test example.
+     *  test model
      *
      * @return void
      */
