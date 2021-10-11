@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Models\Notification;
 use App\Models\User;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Validator;
 
 class UserController extends Controller
 {
@@ -70,8 +71,10 @@ class UserController extends Controller
 
     public function deposit($id, $amount)
     {
-        if ($amount < 0) {
-            return "Invalid amount";
+        if (!is_numeric($amount)) {
+            return response()->json("Invalid amount", 422);
+        } else if ($amount <= 0) {
+            return response()->json("Amount should be at least 1", 422);
         }
         $user = User::findOrFail($id);
         $user->coin += $amount;
@@ -79,10 +82,14 @@ class UserController extends Controller
         return $user;
     }
     public function withdraw($id, $amount)
-    {
+    {   
         $user = User::findOrFail($id);
-        if ($amount > $user->coin) {
-            return "You have not enough coin";
+        if (!is_numeric($amount)) {
+            return response()->json("Invalid amount", 422);
+        } else if ($amount <= 0) {
+            return response()->json("Amount should be at least 1", 422);
+        } else if ($amount > $user->coin) {
+            return response()->json("You not have enough coin", 422);
         }
         $user->coin -= $amount;
         $user->save();
