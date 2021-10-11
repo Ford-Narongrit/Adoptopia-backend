@@ -9,8 +9,7 @@ use App\Http\Controllers\CategoryController;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\Api\AuthController;
-use App\Http\Controllers\TradeAdopController;
-use App\Http\Controllers\TradeCoinController;
+use App\Http\Controllers\TradeController;
 
 /*
 |--------------------------------------------------------------------------
@@ -43,9 +42,8 @@ Route::apiResource('/adopt', AdoptController::class);
 
 Route::apiResource('/category', CategoryController::class);
 
-Route::apiResource('/trade-adop', TradeAdopController::class);
+Route::apiResource('/trade', TradeController::class);
 
-Route::apiResource('/trade-coin', TradeCoinController::class);
 Route::apiResource('/dta-sug', DtaSug::class);
 
 Route::post('/files/upload/{dir}', [UploadFileController::class, 'store']);

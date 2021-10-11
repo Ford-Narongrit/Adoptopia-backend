@@ -4,7 +4,7 @@ use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
 
-class CreateTradeCoinsTable extends Migration
+class CreateTradesTable extends Migration
 {
     /**
      * Run the migrations.
@@ -13,21 +13,15 @@ class CreateTradeCoinsTable extends Migration
      */
     public function up()
     {
-        Schema::create('trade_coins', function (Blueprint $table) {
+        Schema::create('trades', function (Blueprint $table) {
             $table->id();
             $table->unsignedBigInteger('user_id');
             $table->unsignedBigInteger('adopt_id');
-            $table->enum('type', ['auction', 'sale']);
+            $table->enum('type', ['ota', 'dta', 'sale']);
             $table->enum('status', ['on', 'off']);
-            $table->time('end_bit')->nullable();
-            $table->time('last_time')->nullable();
-            $table->double('each_bit')->default(1)->nullable();
-            $table->double('auto_buy')->default(0)->nullable();
-            $table->double('start_price')->default(0)->nullable();
-            $table->double('end_price')->default(0)->nullable();
-            $table->softDeletes();
-
+            $table->double('price')->default(0)->nullable();
             $table->timestamps();
+            $table->softDeletes();
 
             $table->foreign('user_id')->references('id')->on('users');
             $table->foreign('adopt_id')->references('id')->on('adopts');
@@ -41,6 +35,6 @@ class CreateTradeCoinsTable extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('trade_coins');
+        Schema::dropIfExists('trades');
     }
 }

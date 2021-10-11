@@ -47,7 +47,6 @@ class AdoptController extends Controller
         // save in pivot table
         $adopt->category()->attach($catArr);
 
-
         $arrImage = [];
         if ($request->hasfile('images')) {
             foreach ($request->file('images') as $file) {

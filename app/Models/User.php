@@ -11,7 +11,7 @@ use Laravel\Sanctum\HasApiTokens;
 use App\Models\Notification;
 use App\Models\PaymentHistory;
 use App\Models\Adopt;
-use App\Models\TradeAdop;
+use App\Models\Trade;
 use App\Models\DtaSug;
 use Tymon\JWTAuth\Contracts\JWTSubject;
 
@@ -63,16 +63,11 @@ class User extends Authenticatable implements JWTSubject
         return $this->hasMany(Adopt::class);
     }
 
-    public function trade_adops()
+    public function trade()
     {
-        return $this->hasMany(TradeAdop::class);
+        return $this->hasMany(Trade::class);
     }
-
-    public function trade_coin()
-    {
-        return $this->hasMany(TradeCoin::class);
-    }
-    public function dta_sugs()
+    public function dta_sug()
     {
         return $this->hasMany(DtaSug::class);
     }

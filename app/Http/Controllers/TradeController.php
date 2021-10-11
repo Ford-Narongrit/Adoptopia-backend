@@ -3,13 +3,13 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
-use App\Models\TradeCoin;
+use App\Models\Trade;
+use App\Models\Adopt;
 use Tymon\JWTAuth\Facades\JWTAuth;
 use Tymon\JWTAuth\Exceptions\JWTException;
 
-class TradeCoinController extends Controller
+class TradeController extends Controller
 {
-
     public function __construct(){
         $this->middleware('auth:api');
     }
@@ -20,14 +20,14 @@ class TradeCoinController extends Controller
      */
     public function index()
     {
-        $trades = TradeCoin::get();
-        $trade_coins = $trades->map(function ($trade){
+        $trades = Trade::get();
+        $trades->map(function ($trade){
             return collect($trade->adopt
             ->load(['adopt_image', 'category']))
             ->all();
         });
 
-        return $trade_coins;
+        return $trades;
     }
 
     /**
@@ -48,23 +48,16 @@ class TradeCoinController extends Controller
      */
     public function store(Request $request)
     {
-        $trade_coins = new TradeCoin();
+        $trades = new Trade();
         $user = JWTAuth::user();
-        $trade_coins->user_id = $user->id;
-        $trade_coins->adopt_id = $request->adopt_id;
-        $trade_coins->type = $request->type;
-        $trade_coins->status = $request->status;
-
-        $trade_coins->end_bit = $request->end_bit;
-        $trade_coins->last_time = $request->last_time;
-
-        $trade_coins->each_bit = $request->each_bit;
-        $trade_coins->auto_buy = $request->auto_buy;
-        $trade_coins->start_price = $request->start_price;
-        $trade_coins->end_price = $request->end_price;
-
-        $trade_coins->save();
-        return $trade_coins;
+        $trades->user_id = $user->id;
+        $trades->adopt_id = $request->adopt_id;
+        $trades->type = $request->type;
+        $trades->status = $request->status;
+        $trades->price = $request->price;
+        
+        $trades->save();
+        return $trades;
     }
 
     /**

@@ -6,7 +6,7 @@ use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
 
-class TradeCoin extends Model
+class Trade extends Model
 {
     use HasFactory, SoftDeletes;
 
@@ -15,5 +15,8 @@ class TradeCoin extends Model
     }
     public function adopt(){
         return $this->belongsTo(Adopt::class);
+    }
+    public function dta_sug(){
+        return $this->hasMany(DtaSug::class);
     }
 }

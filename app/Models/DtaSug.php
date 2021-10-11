@@ -10,8 +10,8 @@ class DtaSug extends Model
 {
     use HasFactory, SoftDeletes;
 
-    public function trade_adops(){
-        return $this->belongsTo(TradeAdop::class);
+    public function trade(){
+        return $this->belongsTo(Trade::class);
     }
     public function user(){
         return $this->belongsTo(User::class);
