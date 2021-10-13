@@ -2,14 +2,21 @@
 
 namespace App\Http\Controllers;
 
+use App\Http\Requests\TopupRequest;
+use App\Http\Requests\WithdrawRequest;
 use App\Models\Notification;
 use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Validator;
+use Tymon\JWTAuth\Facades\JWTAuth;
 
 class UserController extends Controller
 {
 
+    public function __construct()
+    {
+        $this->middleware('auth:api');
+    }
     /**
      * Display a listing of the resource.
      *
@@ -64,34 +71,30 @@ class UserController extends Controller
      */
     public function destroy($id)
     {
-        $user = User::findOrFail($id);
-        // $this->authorize('delete', $user);
+        $user = JWTAuth::user();
         $user->delete();
     }
 
-    public function deposit($id, $amount)
+    public function deposit(TopupRequest $request)
     {
-        if (!is_numeric($amount)) {
-            return response()->json("Invalid amount", 422);
-        } else if ($amount <= 0) {
-            return response()->json("Amount should be at least 1", 422);
+        $validator = Validator::make($request->all(), $request->rules(), $request->messages());
+        if ($validator->fails()) {
+            return response()->json($validator->errors());
         }
-        $user = User::findOrFail($id);
-        $user->coin += $amount;
+
+        $user = JWTAuth::user();
+        $user->coin += $request->amount;
         $user->save();
         return $user;
     }
-    public function withdraw($id, $amount)
-    {   
-        $user = User::findOrFail($id);
-        if (!is_numeric($amount)) {
-            return response()->json("Invalid amount", 422);
-        } else if ($amount <= 0) {
-            return response()->json("Amount should be at least 1", 422);
-        } else if ($amount > $user->coin) {
-            return response()->json("You not have enough coin", 422);
+    public function withdraw(WithdrawRequest $request)
+    {
+        $user = JWTAuth::user();
+        $validator = Validator::make($request->all(), $request->rules(), $request->messages());
+        if ($validator->fails()) {
+            return response()->json($validator->errors());
         }
-        $user->coin -= $amount;
+        $user->coin -= $request->amount;
         $user->save();
         return $user;
     }
