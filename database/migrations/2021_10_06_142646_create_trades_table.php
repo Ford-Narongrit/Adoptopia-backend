@@ -24,7 +24,7 @@ class CreateTradesTable extends Migration
             $table->softDeletes();
 
             $table->foreign('user_id')->references('id')->on('users');
-            $table->foreign('adopt_id')->references('id')->on('adopts');
+            $table->foreign('adopt_id')->references('id')->on('adopts')->onUpdate('cascade');
         });
     }
 

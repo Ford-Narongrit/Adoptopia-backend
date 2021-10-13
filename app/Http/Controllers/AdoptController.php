@@ -101,6 +101,12 @@ class AdoptController extends Controller
         return $adopt;
     }
 
+    public function transfer($id, $transfer_id){
+        $adopt = Adopt::findOrFail($id);
+        $adopt->user_id = $transfer_id;
+        $adopt->save();
+    }
+
     public function destroy($id)
     {
         $adopt = Adopt::findOrFail($id);

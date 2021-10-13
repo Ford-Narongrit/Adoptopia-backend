@@ -25,7 +25,7 @@ class CreateDtaSugsTable extends Migration
             $table->timestamps();
             $table->softDeletes();
 
-            $table->foreign('trade_id')->references('id')->on('trades');
+            $table->foreign('trade_id')->references('id')->on('trades')->onUpdate('cascade');
             $table->foreign('user_id')->references('id')->on('users');
         });
     }

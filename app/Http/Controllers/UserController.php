@@ -89,13 +89,26 @@ class UserController extends Controller
         } else if ($amount <= 0) {
             return response()->json("Amount should be at least 1", 422);
         } else if ($amount > $user->coin) {
-            return response()->json("You not have enough coin", 422);
+            return response()->json("You don't have enough coin", 422);
         }
         $user->coin -= $amount;
         $user->save();
         return $user;
     }
-
+    public function spend($id, $amount)
+    {
+        $user = User::findOrFail($id);
+        if (!is_numeric($amount)) {
+            return response()->json("Invalid amount", 422);
+        } else if ($amount <= 0) {
+            return response()->json("Amount should be at least 1", 422);
+        } else if ($amount > $user->coin) {
+            return response()->json("You don't have enough coin", 422);
+        }
+        $user->coin -= $amount;
+        $user->save();
+        return $user;
+    }
     public function notification($id)
     {
         $user = Notification::where('user_id', $id)->orderBy('created_at', 'desc')->get();

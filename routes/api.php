@@ -32,6 +32,12 @@ Route::put('/user/deposit/{id}/{amount}' , [UserController::class , 'deposit']);
 
 Route::put('/user/withdraw/{id}/{amount}' , [UserController::class , 'withdraw']);
 
+Route::put('/user/spend/{id}/{amount}' , [UserController::class , 'spend']);
+
+Route::put('/trade/sell/{id}', [TradeController::class, 'sell']);
+
+Route::put('/adopt/transfer/{id}/{transfer_id}', [AdoptController::class, 'transfer']);
+
 Route::get('/user/notification/{id}' , [UserController::class , 'notification']);
 
 Route::apiResource('/notification', NotificationController::class);

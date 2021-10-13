@@ -100,8 +100,15 @@ class TradeController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
+    public function sell($id){
+        $trades = Trade::findOrFail($id);
+        $trades->status = "off";
+        $trades->save();
+        return $trades;
+    }
     public function destroy($id)
     {
-        //
+        $trades = Trade::findOrFail($id);
+        $trades->delete();
     }
 }
