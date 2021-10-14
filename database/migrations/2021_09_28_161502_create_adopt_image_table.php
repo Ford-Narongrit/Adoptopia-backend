@@ -24,7 +24,7 @@ class CreateAdoptImageTable extends Migration
             $table->timestamps();
             $table->softDeletes();
 
-            $table->foreign('adopt_id')->references('id')->on('adopts');
+            $table->foreign('adopt_id')->references('id')->on('adopts')->onUpdate('cascade');
         });
     }
 

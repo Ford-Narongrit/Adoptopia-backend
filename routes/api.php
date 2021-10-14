@@ -41,6 +41,12 @@ Route::put('/adopt/transfer/{id}/{transfer_id}', [AdoptController::class, 'trans
 
 Route::put('/withdraw' , [UserController::class , 'withdraw']);
 
+Route::put('/user/spend/{id}/{amount}' , [UserController::class , 'spend']);
+
+Route::put('/trade/sell/{id}', [TradeController::class, 'sell']);
+
+Route::put('/adopt/transfer/{id}/{transfer_id}', [AdoptController::class, 'transfer']);
+
 Route::get('/user/notification/{id}' , [UserController::class , 'notification']);
 
 Route::apiResource('/notification', NotificationController::class);
