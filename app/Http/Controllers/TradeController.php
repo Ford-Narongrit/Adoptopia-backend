@@ -101,7 +101,7 @@ class TradeController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function sell($id){
+    public function close_sale($id){
         $trades = Trade::findOrFail($id);
         $trades->status = "off";
         $trades->save();

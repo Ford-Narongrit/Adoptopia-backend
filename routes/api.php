@@ -30,7 +30,6 @@ Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
 
 Route::apiResource('/user', UserController::class);
 
-// Route::put('/user/deposit/{id}/{amount}' , [UserController::class , 'deposit']);
 Route::put('/deposit' , [UserController::class , 'deposit']);
 
 Route::put('/user/spend/{id}/{amount}' , [UserController::class , 'spend']);
@@ -41,9 +40,11 @@ Route::put('/adopt/transfer/{id}/{transfer_id}', [AdoptController::class, 'trans
 
 Route::put('/withdraw' , [UserController::class , 'withdraw']);
 
-Route::put('/user/spend/{id}/{amount}' , [UserController::class , 'spend']);
+Route::put('/spend' , [UserController::class , 'withdraw']);
 
-Route::put('/trade/sell/{id}', [TradeController::class, 'sell']);
+Route::put('/user/earn/{id}/{amount}' , [UserController::class , 'earn']);
+
+Route::put('/trade/close_sale/{id}', [TradeController::class, 'close_sale']);
 
 Route::put('/adopt/transfer/{id}/{transfer_id}', [AdoptController::class, 'transfer']);
 
