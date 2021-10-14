@@ -16,12 +16,14 @@ class CreateNotificationsTable extends Migration
         Schema::create('notifications', function (Blueprint $table) {
             $table->id();
             $table->string('text');
+            $table->enum('status', ['seen', 'unseen'])->default('unseen');
             $table->unsignedBigInteger('user_id');
-            $table->unsignedBigInteger('post_id');
+            $table->unsignedBigInteger('trade_id');
             $table->timestamps();
             $table->softDeletes();
 
             $table->foreign('user_id')->references('id')->on('users');
+            $table->foreign('trade_id')->references('id')->on('trades');
             //TODO Uncomment when posts table ready $table->foreign('post_id')->references('id')->on('posts');
         });
     }
