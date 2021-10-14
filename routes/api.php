@@ -28,9 +28,10 @@ Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
 
 Route::apiResource('/user', UserController::class);
 
-Route::put('/user/deposit/{id}/{amount}' , [UserController::class , 'deposit']);
+// Route::put('/user/deposit/{id}/{amount}' , [UserController::class , 'deposit']);
+Route::put('/deposit' , [UserController::class , 'deposit']);
 
-Route::put('/user/withdraw/{id}/{amount}' , [UserController::class , 'withdraw']);
+Route::put('/withdraw' , [UserController::class , 'withdraw']);
 
 Route::put('/user/spend/{id}/{amount}' , [UserController::class , 'spend']);
 
