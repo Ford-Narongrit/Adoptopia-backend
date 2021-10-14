@@ -101,16 +101,17 @@ class UserController extends Controller
     //     $user->save();
     //     return $user;
     // }
-    public function spend($id, $amount)
+    public function earn(TopupRequest $request)
     {
-        $user = User::findOrFail($id);
-        if (!is_numeric($amount)) {
-            return response()->json("Invalid amount", 422);
-        } else if ($amount <= 0) {
-            return response()->json("Amount should be at least 1", 422);
-        } else if ($amount > $user->coin) {
-            return response()->json("You don't have enough coin", 422);
+        $validator = Validator::make($request->all(), $request->rules(), $request->messages());
+        if ($validator->fails()) {
+            return response()->json($validator->errors());
         }
+
+        $user = JWTAuth::user();
+        $user->coin += $request->amount;
+        $user->save();
+        return $user;
     }
     public function withdraw(WithdrawRequest $request)
     {

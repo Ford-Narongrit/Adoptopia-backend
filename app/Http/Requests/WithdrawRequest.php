@@ -36,7 +36,7 @@ class WithdrawRequest extends FormRequest
                 function ($attribute, $value, $fail) {
                     $user = JWTAuth::user();
                     if ($value > $user->coin) {
-                        $fail('You have not enough coin.');
+                        $fail("You don't have enough coin.");
                     }
                 }
 
