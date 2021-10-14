@@ -45,11 +45,14 @@ class AuthController extends Controller
 
         if ($validator->fails()) {
             return response()->json($validator->errors(), 422);
-//            return response()->json(['massage' => $validator->errors()], 422);
         }
 
         if (!$token = JWTAuth::attempt($request->only($login_type, 'password'))) {
             return response()->json(['error' => 'Unauthorized'], 401);
+        }
+
+        if (JWTAuth::user()->isBanned()){
+            return response()->json(['error' => 'Banned'], 423);
         }
         return $this->respondWithToken($token);
     }
@@ -99,11 +102,7 @@ class AuthController extends Controller
     public function me(Request $request)
     {
         $user = JWTAuth::user();
-//        $user->load(['adopt' => function ($query) {
-//            $query->orderBy('created_at', "desc");
-//        }, 'notification' => function ($query) {
-//            $query->orderBy('created_at', "desc");
-//        }]);
+        $user->load(['followers', 'following']);
         return response()->json($user);
     }
 

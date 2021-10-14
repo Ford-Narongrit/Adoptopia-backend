@@ -20,10 +20,13 @@ class UserController extends Controller
     /**
      * Display a listing of the resource.
      *
-     * @return \Illuminate\Http\Response
+     * @return User[]|\Illuminate\Database\Eloquent\Collection|\Illuminate\Http\JsonResponse
      */
     public function index()
     {
+        if (!JWTAuth::user()->isAdmin()){
+            return response()->json(['error' => 'Banned'], 423);
+        }
         $user = User::all();
         return $user;
     }
@@ -43,10 +46,13 @@ class UserController extends Controller
      * Display the specified resource.
      *
      * @param int $id
-     * @return \Illuminate\Http\Response
+     * @return \Illuminate\Http\JsonResponse
      */
     public function show($id)
     {
+        if (!JWTAuth::user()->isAdmin()){
+            return response()->json(['error' => 'Banned'], 423);
+        }
         $user = User::findOrFail($id);
         return $user;
     }
@@ -87,20 +93,7 @@ class UserController extends Controller
         $user->save();
         return $user;
     }
-    // public function withdraw($id, $amount)
-    // {   
-    //     $user = User::findOrFail($id);
-    //     if (!is_numeric($amount)) {
-    //         return response()->json("Invalid amount", 422);
-    //     } else if ($amount <= 0) {
-    //         return response()->json("Amount should be at least 1", 422);
-    //     } else if ($amount > $user->coin) {
-    //         return response()->json("You don't have enough coin", 422);
-    //     }
-    //     $user->coin -= $amount;
-    //     $user->save();
-    //     return $user;
-    // }
+
     public function earn(TopupRequest $request)
     {
         $validator = Validator::make($request->all(), $request->rules(), $request->messages());
