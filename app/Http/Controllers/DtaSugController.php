@@ -10,6 +10,10 @@ use Intervention\Image\Facades\Image;
 
 class DtaSugController extends Controller
 {
+    public function __construct(){
+        $this->middleware('auth:api');
+    }
+
     /**
      * Display a listing of the resource.
      *
@@ -17,8 +21,8 @@ class DtaSugController extends Controller
      */
     public function index()
     {
-        $user = JWTAuth::user();
-        $dta_sugs = user()->dta_sugs()->get();
+        $dta_sugs = DtaSug::get();
+        return $dta_sugs;
     }
 
     /**
@@ -45,6 +49,7 @@ class DtaSugController extends Controller
         $dta_sugs->user_id = $user->id;
         $dta_sugs->status = $request->status;
 
+        $file = $request->file('image');
         $filename = $file->getClientOriginalName();
         $filename = time() . '-' . str_replace(' ', '', $filename);
         $path = $file->storeAs("public/dta_sugs", $filename);

@@ -19,8 +19,8 @@ class CreateAdoptCategoryTable extends Migration
             $table->unsignedBigInteger('category_id');
             $table->timestamps();
 
-            $table->foreign('adopt_id')->references('id')->on('adopts');
-            $table->foreign('category_id')->references('id')->on('categories');
+            $table->foreign('adopt_id')->references('id')->on('adopts')->onUpdate('cascade');
+            $table->foreign('category_id')->references('id')->on('categories')->onUpdate('cascade');
 
         });
     }

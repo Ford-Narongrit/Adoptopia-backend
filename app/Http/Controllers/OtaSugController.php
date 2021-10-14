@@ -3,17 +3,16 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
-use App\Models\Trade;
+use App\Models\OtaSug;
 use App\Models\Adopt;
 use Tymon\JWTAuth\Facades\JWTAuth;
-use Tymon\JWTAuth\Exceptions\JWTException;
 
-class TradeController extends Controller
+class OtaSugController extends Controller
 {
     public function __construct(){
         $this->middleware('auth:api');
     }
-    
+
     /**
      * Display a listing of the resource.
      *
@@ -21,14 +20,14 @@ class TradeController extends Controller
      */
     public function index()
     {
-        $trades = Trade::get();
-        $trades->map(function ($trade){
-            return collect($trade->adopt
+        $ota_sugs = OtaSug::get();
+        $ota_sugs->map(function ($ota_sug){
+            return collect($ota_sug->adopt
             ->load(['adopt_image', 'category']))
             ->all();
         });
 
-        return $trades;
+        return $ota_sugs;
     }
 
     /**
@@ -49,16 +48,15 @@ class TradeController extends Controller
      */
     public function store(Request $request)
     {
-        $trades = new Trade();
+        $ota_sugs = new OtaSug();
+        $ota_sugs->trade_id = $request->trade_id;
         $user = JWTAuth::user();
-        $trades->user_id = $user->id;
-        $trades->adopt_id = $request->adopt_id;
-        $trades->type = $request->type;
-        $trades->status = $request->status;
-        $trades->price = $request->price;
-        
-        $trades->save();
-        return $trades;
+        $ota_sugs->user_id = $user->id;
+        $ota_sugs->adopt_id = $request->adopt_id;
+        $ota_sugs->status = $request->status;
+
+        $ota_sugs->save();
+        return $ota_sugs;
     }
 
     /**
@@ -103,7 +101,6 @@ class TradeController extends Controller
      */
     public function destroy($id)
     {
-        $trades = Trade::findOrFail($id);
-        $trades->delete();
+        //
     }
 }

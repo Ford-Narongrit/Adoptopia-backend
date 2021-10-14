@@ -10,6 +10,8 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\Api\AuthController;
 use App\Http\Controllers\TradeController;
+use App\Http\Controllers\DtaSugController;
+use App\Http\Controllers\OtaSugController;
 
 /*
 |--------------------------------------------------------------------------
@@ -31,6 +33,12 @@ Route::apiResource('/user', UserController::class);
 // Route::put('/user/deposit/{id}/{amount}' , [UserController::class , 'deposit']);
 Route::put('/deposit' , [UserController::class , 'deposit']);
 
+Route::put('/user/spend/{id}/{amount}' , [UserController::class , 'spend']);
+
+Route::put('/trade/sell/{id}', [TradeController::class, 'sell']);
+
+Route::put('/adopt/transfer/{id}/{transfer_id}', [AdoptController::class, 'transfer']);
+
 Route::put('/withdraw' , [UserController::class , 'withdraw']);
 
 Route::get('/user/notification/{id}' , [UserController::class , 'notification']);
@@ -45,7 +53,9 @@ Route::apiResource('/category', CategoryController::class);
 
 Route::apiResource('/trade', TradeController::class);
 
-Route::apiResource('/dta-sug', DtaSug::class);
+Route::apiResource('/dta-sug', DtaSugController::class);
+
+Route::apiResource('/ota-sug', OtaSugController::class);
 
 Route::post('/files/upload/{dir}', [UploadFileController::class, 'store']);
 

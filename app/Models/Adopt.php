@@ -23,4 +23,7 @@ class Adopt extends Model
     public function trade(){
         return $this->hasOne(Trade::class);
     }
+    public function ota_sug(){
+        return $this->hasMany(OtaSug::class);
+    }
 }

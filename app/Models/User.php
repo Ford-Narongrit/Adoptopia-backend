@@ -13,6 +13,7 @@ use App\Models\PaymentHistory;
 use App\Models\Adopt;
 use App\Models\Trade;
 use App\Models\DtaSug;
+use App\Models\OtaSug;
 use Tymon\JWTAuth\Contracts\JWTSubject;
 
 class User extends Authenticatable implements JWTSubject
@@ -67,9 +68,15 @@ class User extends Authenticatable implements JWTSubject
     {
         return $this->hasMany(Trade::class);
     }
+
     public function dta_sug()
     {
         return $this->hasMany(DtaSug::class);
+    }
+
+    public function ota_sug()
+    {
+        return $this->hasMany(OtaSug::class);
     }
 
     public function getJWTIdentifier()

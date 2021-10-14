@@ -4,7 +4,7 @@ use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
 
-class CreateDtaSugsTable extends Migration
+class CreateOtaSugsTable extends Migration
 {
     /**
      * Run the migrations.
@@ -13,20 +13,19 @@ class CreateDtaSugsTable extends Migration
      */
     public function up()
     {
-        Schema::create('dta_sugs', function (Blueprint $table) {
+        Schema::create('ota_sugs', function (Blueprint $table) {
             $table->id();
             $table->unsignedBigInteger('trade_id');
             $table->unsignedBigInteger('user_id');
+            $table->unsignedBigInteger('adopt_id');
             $table->boolean('status');
-            $table->string('path');
-            $table->integer('size');
-            $table->integer('width');
-            $table->integer('height');
+            
             $table->timestamps();
             $table->softDeletes();
 
             $table->foreign('trade_id')->references('id')->on('trades')->onUpdate('cascade');
             $table->foreign('user_id')->references('id')->on('users');
+            $table->foreign('adopt_id')->references('id')->on('adopts')->onUpdate('cascade');
         });
     }
 
@@ -37,6 +36,6 @@ class CreateDtaSugsTable extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('dta_sugs');
+        Schema::dropIfExists('ota_sugs');
     }
 }
