@@ -13,6 +13,8 @@ class PaymentHistory extends Model
     public function user() {
         return $this->belongsTo(User::class);
     }
-    
+    public function trans_user() {
+        return $this->belongsTo(User::class, 'trans_user');
+    }
 
 }
