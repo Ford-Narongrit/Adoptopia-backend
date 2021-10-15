@@ -24,37 +24,28 @@ use App\Http\Controllers\OtaSugController;
 |
 */
 
-Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
-    return $request->user();
-});
-
+//user
 Route::apiResource('/user', UserController::class);
-
 Route::put('/deposit' , [UserController::class , 'deposit']);
-
 Route::put('/user/spend/{id}/{amount}' , [UserController::class , 'spend']);
+Route::put('/withdraw' , [UserController::class , 'withdraw']);
+Route::put('/spend' , [UserController::class , 'withdraw']);
+Route::put('/user/earn/{id}/{amount}' , [UserController::class , 'earn']);
+Route::get('/user/notification/{id}' , [UserController::class , 'notification']);
+
+//Adopt
+Route::put('/adopt/transfer/{id}/{transfer_id}', [AdoptController::class, 'transfer']);
+Route::put('/adopt/transfer/{id}/{transfer_id}', [AdoptController::class, 'transfer']);
+Route::get('/adops/{slug}', [AdoptController::class, 'getAllUserAdop']);
+Route::apiResource('/adopt', AdoptController::class);
 
 Route::put('/trade/sell/{id}', [TradeController::class, 'sell']);
 
-Route::put('/adopt/transfer/{id}/{transfer_id}', [AdoptController::class, 'transfer']);
-
-Route::put('/withdraw' , [UserController::class , 'withdraw']);
-
-Route::put('/spend' , [UserController::class , 'withdraw']);
-
-Route::put('/user/earn/{id}/{amount}' , [UserController::class , 'earn']);
-
 Route::put('/trade/close_sale/{id}', [TradeController::class, 'close_sale']);
-
-Route::put('/adopt/transfer/{id}/{transfer_id}', [AdoptController::class, 'transfer']);
-
-Route::get('/user/notification/{id}' , [UserController::class , 'notification']);
 
 Route::apiResource('/notification', NotificationController::class);
 
 Route::apiResource('/payment-histories', PaymentHistoryController::class);
-
-Route::apiResource('/adopt', AdoptController::class);
 
 Route::apiResource('/category', CategoryController::class);
 
@@ -77,4 +68,12 @@ Route::group([
     Route::post('refresh', [AuthController::class, 'refresh']);
     Route::post('me', [AuthController::class, 'me']);
     Route::post('update', [AuthController::class, 'update']);
+});
+//Follow
+Route::group([
+    'prefix' => 'follow'
+], function ($router){
+    Route::post('/{id}', [\App\Http\Controllers\Api\FollowUserController::class, 'follow']);
+    Route::get('/{id}', [\App\Http\Controllers\Api\FollowUserController::class, 'isFollow']);
+    Route::delete('/{id}', [\App\Http\Controllers\Api\FollowUserController::class, 'unFollow']);
 });
