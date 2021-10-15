@@ -98,7 +98,7 @@ class UserController extends Controller
         $user->save();
         return $user;
     }
-
+    
     public function earn(TopupRequest $request)
     {
         $validator = Validator::make($request->all(), $request->rules(), $request->messages());
@@ -106,7 +106,7 @@ class UserController extends Controller
             return response()->json($validator->errors());
         }
 
-        $user = JWTAuth::user();
+        $user = User::findOrFail($request->id);
         $user->coin += $request->amount;
         $user->save();
         return $user;

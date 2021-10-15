@@ -25,7 +25,7 @@ class NotificationFactory extends Factory
         return [
             'text' => $this->faker->realText(),
             'user_id' => User::get()->pluck('id')->random(),
-            'post_id' => 1,
+            
         ];
     }
 }

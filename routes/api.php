@@ -30,32 +30,36 @@ Route::put('/deposit' , [UserController::class , 'deposit']);
 Route::put('/user/spend/{id}/{amount}' , [UserController::class , 'spend']);
 Route::put('/withdraw' , [UserController::class , 'withdraw']);
 Route::put('/spend' , [UserController::class , 'withdraw']);
-Route::put('/user/earn/{id}/{amount}' , [UserController::class , 'earn']);
-Route::get('/user/notification/{id}' , [UserController::class , 'notification']);
+Route::put('/earn' , [UserController::class , 'earn']);
 
 //Adopt
 Route::put('/adopt/transfer/{id}/{transfer_id}', [AdoptController::class, 'transfer']);
 Route::put('/adopt/transfer/{id}/{transfer_id}', [AdoptController::class, 'transfer']);
 Route::get('/adops/{slug}', [AdoptController::class, 'getAllUserAdop']);
 Route::apiResource('/adopt', AdoptController::class);
+Route::put('/adopt/transfer/{id}/{transfer_id}', [AdoptController::class, 'transfer']);
 
+//Trade
 Route::put('/trade/sell/{id}', [TradeController::class, 'sell']);
-
+Route::put('/trade/sell/{id}', [TradeController::class, 'sell']);
 Route::put('/trade/close_sale/{id}', [TradeController::class, 'close_sale']);
-
-Route::apiResource('/notification', NotificationController::class);
-
-Route::apiResource('/payment-histories', PaymentHistoryController::class);
-
-Route::apiResource('/category', CategoryController::class);
-
 Route::apiResource('/trade', TradeController::class);
 
+//Other
+Route::apiResource('/payment-histories', PaymentHistoryController::class);
+Route::apiResource('/category', CategoryController::class);
 Route::apiResource('/dta-sug', DtaSugController::class);
-
 Route::apiResource('/ota-sug', OtaSugController::class);
-
 Route::post('/files/upload/{dir}', [UploadFileController::class, 'store']);
+
+//Notification Route
+Route::prefix('notification')->group(function () {
+    Route::apiResource('', NotificationController::class);
+    Route::put('updateStatus', [NotificationController::class , 'updateStatus']);
+    Route::post('sale-notification/{id}', [NotificationController::class , 'saleNotification']);
+    Route::get('unseen', [NotificationController::class , 'unseen']);
+    Route::get('seen', [NotificationController::class , 'seen']);
+});
 
 //Auth Route
 Route::group([
