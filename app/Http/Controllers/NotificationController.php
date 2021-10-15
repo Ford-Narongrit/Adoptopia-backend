@@ -2,8 +2,10 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Adopt;
 use Illuminate\Http\Request;
 use App\Models\Notification;
+use App\Models\Trade;
 use Tymon\JWTAuth\Facades\JWTAuth;
 
 class NotificationController extends Controller
@@ -75,5 +77,23 @@ class NotificationController extends Controller
             $notification->save();
         });
         return $notifications;
+    }
+    public function saleNotification($id){
+
+        $user = JWTAuth::user();
+
+        // get trade -> user
+        $trade = Trade::findOrFail($id);
+        $adop = Adopt::findOrFail($trade->adopt_id);
+
+        // save notification
+        $notification = new Notification();
+        $notification->text = $user->name." buy your ".$adop->name.".\nYou have earn ".$trade->price." coins.";
+        $notification->owner_id = $trade->user_id;
+        $notification->user_id = $user->id;
+        $notification->trade_id = $trade->id;
+        $notification->save();
+
+        return $notification;
     }
 }
