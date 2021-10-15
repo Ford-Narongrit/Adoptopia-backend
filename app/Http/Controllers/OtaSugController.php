@@ -5,6 +5,8 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use App\Models\OtaSug;
 use App\Models\Adopt;
+use App\Models\Notification;
+use App\Models\Trade;
 use Tymon\JWTAuth\Facades\JWTAuth;
 
 class OtaSugController extends Controller
@@ -54,8 +56,19 @@ class OtaSugController extends Controller
         $ota_sugs->user_id = $user->id;
         $ota_sugs->adopt_id = $request->adopt_id;
         $ota_sugs->status = $request->status;
-
         $ota_sugs->save();
+
+        $trade = Trade::with('adopt')->findOrFail($request->trade_id);
+
+        // save notification
+        $notification = new Notification();
+        $notification->text = $user->name." send request to your ".$trade->adopt->name." adop (OTA) nakab";
+        $notification->owner_id = $trade->user_id;
+        $notification->user_id = $user->id;
+        $notification->trade_id = $request->trade_id;
+        $notification->save();
+
+
         return $ota_sugs;
     }
 
