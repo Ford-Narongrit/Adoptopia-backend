@@ -4,6 +4,7 @@ namespace Database\Seeders;
 
 use App\Models\FollowerUser;
 use App\Models\User;
+use Carbon\Carbon;
 use Illuminate\Database\Seeder;
 
 class FollowerUserSeeder extends Seeder
@@ -25,6 +26,7 @@ class FollowerUserSeeder extends Seeder
             FollowerUser::firstOrCreate([
                 'follower_id' => $following,
                 'following_id' => $follower,
+                'accepted_at' => Carbon::now(),
             ]);
             $createCount--;
         }
