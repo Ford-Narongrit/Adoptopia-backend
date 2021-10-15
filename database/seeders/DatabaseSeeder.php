@@ -18,5 +18,6 @@ class DatabaseSeeder extends Seeder
         $this->call(AdoptSeeder::class);
         $this->call(NotificationSeeder::class);
         $this->call(PaymentHistorySeeder::class);
+        $this->call(FollowerUserSeeder::class);
     }
 }
