@@ -4,13 +4,20 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use App\Models\Notification;
+use Tymon\JWTAuth\Facades\JWTAuth;
 
 class NotificationController extends Controller
 {
+    public function __construct()
+    {
+        $this->middleware('auth:api');
+    }
 
     public function index()
     {
-        $notifications = Notification::with('user')->get();
+        $user = JWTAuth::user();
+        $notifications = Notification::with(['user','trade'])->where('owner_id', $user->id)
+                                    ->orderBy('created_at', 'desc')->take(20)->get();
         return $notifications;
     }
 
@@ -27,7 +34,8 @@ class NotificationController extends Controller
 
     public function show($id)
     {
-        $notification = Notification::with('user')->where('id', $id)->get();
+        $notification = Notification::where('user_id', $id)->orderBy('created_at', 'desc')->get();
+        return $notification;
         return $notification;
     }
 
@@ -45,5 +53,27 @@ class NotificationController extends Controller
     {
         $notification = Notification::findOrFail($id);
         $notification->delete();
+    }
+
+    public function unseen(){
+        $user = JWTAuth::user();
+        $notifications = Notification::where([ ['owner_id', $user->id] , ['status' , 'unseen'] ])->get();
+        return $notifications;
+    }
+
+    public function seen(){
+        $user = JWTAuth::user();
+        $notifications = Notification::where([ ['owner_id', $user->id] , ['status' , 'seen'] ])->get();
+        return $notifications;
+    }
+
+    public function updateStatus(){
+        $user = JWTAuth::user();
+        $notifications = Notification::where([ ['owner_id', $user->id] , ['status' , 'unseen'] ])->get();
+        $notifications->map(function ($notification){
+            $notification->status = "seen";
+            $notification->save();
+        });
+        return $notifications;
     }
 }

@@ -13,7 +13,7 @@ class TradeController extends Controller
     public function __construct(){
         $this->middleware('auth:api');
     }
-    
+
     /**
      * Display a listing of the resource.
      *
@@ -56,7 +56,7 @@ class TradeController extends Controller
         $trades->type = $request->type;
         $trades->status = $request->status;
         $trades->price = $request->price;
-        
+
         $trades->save();
         return $trades;
     }
@@ -70,6 +70,8 @@ class TradeController extends Controller
     public function show($id)
     {
         //
+        $trade = Trade::findOrFail($id);
+        return $trade;
     }
 
     /**

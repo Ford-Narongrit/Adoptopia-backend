@@ -2,8 +2,12 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Adopt;
 use Illuminate\Http\Request;
 use App\Models\DtaSug;
+use App\Models\Notification;
+use App\Models\Trade;
+use App\Models\User;
 use Tymon\JWTAuth\Facades\JWTAuth;
 use Illuminate\Support\Facades\Storage;
 use Intervention\Image\Facades\Image;
@@ -60,8 +64,22 @@ class DtaSugController extends Controller
         $dta_sugs->width = $width;
         $height = Image::make($file->getRealPath())->height();
         $dta_sugs->height = $height;
-        
+
         $dta_sugs->save();
+
+        // get trade -> user
+        $trade = Trade::findOrFail($request->trade_id);
+        $adop = Adopt::findOrFail($trade->adopt_id);
+
+
+        // save notification
+        $notification = new Notification();
+        $notification->text = $user->name." send request to your ".$adop->name." adop (DTA)s";
+        $notification->owner_id = $trade->user_id;
+        $notification->user_id = $user->id;
+        $notification->trade_id = $request->trade_id;
+        $notification->save();
+
         return $dta_sugs;
     }
 
