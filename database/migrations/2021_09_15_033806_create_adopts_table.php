@@ -18,6 +18,7 @@ class CreateAdoptsTable extends Migration
             $table->string('name');
             $table->string('agreement');
             $table->unsignedBigInteger('user_id');
+            $table->boolean('status');
             $table->timestamps();
             $table->softDeletes();
 

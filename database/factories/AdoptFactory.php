@@ -29,7 +29,7 @@ class AdoptFactory extends Factory
             'name' => $name,
             'agreement' => $this->faker->realText(),
             'user_id' => User::get()->pluck('id')->random(),
-            
+            'status' => 0
 
         ];
     }

@@ -39,7 +39,8 @@ Route::apiResource('/notification', NotificationController::class);
 
 //Adopt
 Route::put('/adopt/transfer/{id}/{transfer_id}', [AdoptController::class, 'transfer']);
-Route::put('/adopt/transfer/{id}/{transfer_id}', [AdoptController::class, 'transfer']);
+Route::put('/adopt/inUse/{id}', [AdoptController::class, 'inUse']);
+Route::put('/adopt/unUse/{id}', [AdoptController::class, 'unUse']);
 Route::get('/adops/{slug}', [AdoptController::class, 'getAllUserAdop']);
 Route::apiResource('/adopt', AdoptController::class);
 Route::put('/adopt/transfer/{id}/{transfer_id}', [AdoptController::class, 'transfer']);
