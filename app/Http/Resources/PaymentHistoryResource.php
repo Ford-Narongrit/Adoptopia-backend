@@ -21,7 +21,7 @@ class PaymentHistoryResource extends JsonResource
             $counterParty = User::findOrFail($counterPartyId);
             $counterUsername = $counterParty->username;
             $status === "earn" ? $pepo = "from" : $pepo = "to";
-            $description = "You ". $status ." ". $amount . " baht " . $pepo ." ". $counterUsername; 
+            $description = "You ". $status ."ed ". $amount . " baht " . $pepo ." ". $counterUsername; 
         }
             
         return [

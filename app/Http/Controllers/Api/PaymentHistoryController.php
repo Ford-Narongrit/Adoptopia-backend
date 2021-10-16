@@ -40,8 +40,17 @@ class PaymentHistoryController extends Controller
             $amount = number_format( (float) $request->amount, 2, '.', '');
         }
         
-
-        $paymentHistory->trans_user = $request->trans_user;
+        if($request->trans_user){
+            $trans_user = User::findOrFail($request->trans_user);
+            $paymentHistory->trans_user = $trans_user->id;
+            $paymentEarn = new PaymentHistory();
+            $paymentEarn->status = 'earn';
+            $paymentEarn->amount = $amount;
+            $paymentEarn->user_id = $trans_user->id;
+            $paymentEarn->trans_user = $user->id;
+            $paymentEarn->save();
+        }
+        
         $paymentHistory->status = $status;
         $paymentHistory->amount = $amount;
         $paymentHistory->user_id = $user->id;

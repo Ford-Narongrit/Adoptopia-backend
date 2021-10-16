@@ -46,6 +46,7 @@ class AdoptController extends Controller
         $adopt->agreement = $request->agreement;
         $user = JWTAuth::user();
         $adopt->user_id = $user->id;
+        $adopt->status = 0;
         $catArr = [];
 
         foreach ($request->category as $category_id) {
@@ -112,6 +113,18 @@ class AdoptController extends Controller
     public function transfer($id, $transfer_id){
         $adopt = Adopt::findOrFail($id);
         $adopt->user_id = $transfer_id;
+        $adopt->save();
+    }
+
+    public function inUse($id){
+        $adopt = Adopt::findOrFail($id);
+        $adopt->status = 1;
+        $adopt->save();
+    }
+
+    public function unUse($id){
+        $adopt = Adopt::findOrFail($id);
+        $adopt->status = 0;
         $adopt->save();
     }
 

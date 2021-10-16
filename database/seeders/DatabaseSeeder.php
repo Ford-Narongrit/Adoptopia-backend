@@ -19,6 +19,7 @@ class DatabaseSeeder extends Seeder
         $this->call(AdoptSeeder::class);
         $this->call(AdopImageSeeder::class);
         $this->call(PaymentHistorySeeder::class);
+        $this->call(AdopHistorySeeder::class);
         $this->call(FollowerUserSeeder::class);
     }
 }

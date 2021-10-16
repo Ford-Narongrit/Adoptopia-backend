@@ -5,6 +5,7 @@ use App\Http\Controllers\AdoptController;
 use App\Http\Controllers\NotificationController;
 use App\Http\Controllers\UploadFileController;
 use App\Http\Controllers\Api\PaymentHistoryController;
+use App\Http\Controllers\Api\AdopHistoryController;
 use App\Http\Controllers\CategoryController;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
@@ -32,9 +33,14 @@ Route::put('/withdraw', [UserController::class, 'withdraw']);
 Route::put('/spend', [UserController::class, 'withdraw']);
 Route::put('/earn', [UserController::class, 'earn']);
 
+Route::get('/user/notification/{id}' , [UserController::class , 'notification']);
+
+Route::apiResource('/notification', NotificationController::class);
+
 //Adopt
 Route::put('/adopt/transfer/{id}/{transfer_id}', [AdoptController::class, 'transfer']);
-Route::put('/adopt/transfer/{id}/{transfer_id}', [AdoptController::class, 'transfer']);
+Route::put('/adopt/inUse/{id}', [AdoptController::class, 'inUse']);
+Route::put('/adopt/unUse/{id}', [AdoptController::class, 'unUse']);
 Route::get('/adops/{slug}', [AdoptController::class, 'getAllUserAdop']);
 Route::apiResource('/adopt', AdoptController::class);
 Route::put('/adopt/transfer/{id}/{transfer_id}', [AdoptController::class, 'transfer']);
@@ -46,6 +52,7 @@ Route::put('/trade/close_sale/{id}', [TradeController::class, 'close_sale']);
 Route::apiResource('/trade', TradeController::class);
 
 //Other
+Route::apiResource('/adop-histories', AdopHistoryController::class);
 Route::apiResource('/payment-histories', PaymentHistoryController::class);
 Route::apiResource('/category', CategoryController::class);
 Route::apiResource('/dta-sug', DtaSugController::class);
