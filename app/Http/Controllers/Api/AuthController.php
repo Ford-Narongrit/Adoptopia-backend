@@ -115,7 +115,7 @@ class AuthController extends Controller
     {
         $validator = Validator::make($request->all(), [
             'name' => 'required|string',
-            'description' => 'string|max:50'
+            'description' => 'max:50'
         ]);
 
         if ($validator->fails()) {
@@ -126,7 +126,7 @@ class AuthController extends Controller
         if ($request->name !== null) {
             $user->name = $request->name;
         }
-        if ($request->description !== null) {
+        if ($request->description !== "") {
             $user->description = $request->description;
         }
         if ($request->file('profile')) {

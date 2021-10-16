@@ -26,11 +26,11 @@ use App\Http\Controllers\OtaSugController;
 
 //user
 Route::apiResource('/user', UserController::class);
-Route::put('/deposit' , [UserController::class , 'deposit']);
-Route::put('/user/spend/{id}/{amount}' , [UserController::class , 'spend']);
-Route::put('/withdraw' , [UserController::class , 'withdraw']);
-Route::put('/spend' , [UserController::class , 'withdraw']);
-Route::put('/earn' , [UserController::class , 'earn']);
+Route::put('/deposit', [UserController::class, 'deposit']);
+Route::put('/user/spend/{id}/{amount}', [UserController::class, 'spend']);
+Route::put('/withdraw', [UserController::class, 'withdraw']);
+Route::put('/spend', [UserController::class, 'withdraw']);
+Route::put('/earn', [UserController::class, 'earn']);
 
 //Adopt
 Route::put('/adopt/transfer/{id}/{transfer_id}', [AdoptController::class, 'transfer']);
@@ -55,10 +55,10 @@ Route::post('/files/upload/{dir}', [UploadFileController::class, 'store']);
 //Notification Route
 Route::prefix('notification')->group(function () {
     Route::apiResource('', NotificationController::class);
-    Route::put('updateStatus', [NotificationController::class , 'updateStatus']);
-    Route::post('sale-notification/{id}', [NotificationController::class , 'saleNotification']);
-    Route::get('unseen', [NotificationController::class , 'unseen']);
-    Route::get('seen', [NotificationController::class , 'seen']);
+    Route::put('updateStatus', [NotificationController::class, 'updateStatus']);
+    Route::post('sale-notification/{id}', [NotificationController::class, 'saleNotification']);
+    Route::get('unseen', [NotificationController::class, 'unseen']);
+    Route::get('seen', [NotificationController::class, 'seen']);
 });
 
 //Auth Route
@@ -76,8 +76,22 @@ Route::group([
 //Follow
 Route::group([
     'prefix' => 'follow'
-], function ($router){
+], function ($router) {
     Route::post('/{id}', [\App\Http\Controllers\Api\FollowUserController::class, 'follow']);
     Route::get('/{id}', [\App\Http\Controllers\Api\FollowUserController::class, 'isFollow']);
     Route::delete('/{id}', [\App\Http\Controllers\Api\FollowUserController::class, 'unFollow']);
 });
+
+//report
+Route::group([
+    'prefix' => 'report'
+], function ($router) {
+    Route::apiResource('user', \App\Http\Controllers\Admin\ReportUserController::class);
+    Route::apiResource('post', \App\Http\Controllers\Admin\ReportPostController::class);
+});
+
+//ban
+Route::get('/ban/user', [\App\Http\Controllers\Admin\BanController::class, 'userBan']);
+Route::post('/ban', [\App\Http\Controllers\Admin\BanController::class, 'ban']);
+Route::post('/unban', [\App\Http\Controllers\Admin\BanController::class, 'unban']);
+
