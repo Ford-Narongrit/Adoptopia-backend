@@ -33,9 +33,6 @@ Route::put('/spend' , [UserController::class , 'withdraw']);
 Route::put('/earn' , [UserController::class , 'earn']);
 
 Route::get('/user/owner/{id}' , [UserController::class , 'showOwner']);
-Route::get('/user/notification/{id}' , [UserController::class , 'notification']);
-
-Route::apiResource('/notification', NotificationController::class);
 
 //Adopt
 Route::put('/adopt/transfer/{id}/{transfer_id}', [AdoptController::class, 'transfer']);
