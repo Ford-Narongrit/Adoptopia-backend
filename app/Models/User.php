@@ -104,11 +104,11 @@ class User extends Authenticatable implements JWTSubject
 
     public function followers()
     {
-        return $this->belongsToMany(User::class, 'follower_user', 'following_id', 'follower_id')->withTimestamps();
+        return $this->belongsToMany(User::class, 'follower_user', 'following_id', 'follower_id')->where('banned', '==', null);
     }
 
     public function following()
     {
-        return $this->belongsToMany(User::class, 'follower_user', 'follower_id', 'following_id')->withTimestamps();
+        return $this->belongsToMany(User::class, 'follower_user', 'follower_id', 'following_id')->where('banned', '==', null);
     }
 }

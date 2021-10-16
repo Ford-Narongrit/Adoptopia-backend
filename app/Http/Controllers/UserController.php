@@ -53,6 +53,9 @@ class UserController extends Controller
     {
         $owner = JWTAuth::user();
         $user = User::where('username', $slug)->with(['followers', 'following'])->first();
+        if($user->banned != null && $owner->role != 'ADMIN'){
+            return response()->json(['error' => 'Banned'], 423);
+        }
         if ($owner->id == $user->id) {
             $user->setAttribute('isOwner', true);
         }
@@ -98,7 +101,7 @@ class UserController extends Controller
         $user->save();
         return $user;
     }
-    
+
     public function earn(TopupRequest $request)
     {
         $validator = Validator::make($request->all(), $request->rules(), $request->messages());
