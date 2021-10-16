@@ -127,6 +127,11 @@ class UserController extends Controller
         return $user;
     }
 
+    public function showOwner($id){
+        $user = User::findOrFail($id);
+        return $user;
+    }
+
     public function notification($id)
     {
         $user = Notification::where('user_id', $id)->orderBy('created_at', 'desc')->get();

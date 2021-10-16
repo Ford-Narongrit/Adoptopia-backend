@@ -27,12 +27,12 @@ use App\Http\Controllers\OtaSugController;
 
 //user
 Route::apiResource('/user', UserController::class);
-Route::put('/deposit', [UserController::class, 'deposit']);
-Route::put('/user/spend/{id}/{amount}', [UserController::class, 'spend']);
-Route::put('/withdraw', [UserController::class, 'withdraw']);
-Route::put('/spend', [UserController::class, 'withdraw']);
-Route::put('/earn', [UserController::class, 'earn']);
+Route::put('/deposit' , [UserController::class , 'deposit']);
+Route::put('/withdraw' , [UserController::class , 'withdraw']);
+Route::put('/spend' , [UserController::class , 'withdraw']);
+Route::put('/earn' , [UserController::class , 'earn']);
 
+Route::get('/user/owner/{id}' , [UserController::class , 'showOwner']);
 Route::get('/user/notification/{id}' , [UserController::class , 'notification']);
 
 Route::apiResource('/notification', NotificationController::class);
@@ -43,12 +43,11 @@ Route::put('/adopt/inUse/{id}', [AdoptController::class, 'inUse']);
 Route::put('/adopt/unUse/{id}', [AdoptController::class, 'unUse']);
 Route::get('/adops/{slug}', [AdoptController::class, 'getAllUserAdop']);
 Route::apiResource('/adopt', AdoptController::class);
-Route::put('/adopt/transfer/{id}/{transfer_id}', [AdoptController::class, 'transfer']);
 
 //Trade
 Route::put('/trade/sell/{id}', [TradeController::class, 'sell']);
-Route::put('/trade/sell/{id}', [TradeController::class, 'sell']);
 Route::put('/trade/close_sale/{id}', [TradeController::class, 'close_sale']);
+Route::delete('/trade', [TradeController::class, 'destroy']);
 Route::apiResource('/trade', TradeController::class);
 
 //Other

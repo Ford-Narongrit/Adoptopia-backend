@@ -63,7 +63,7 @@ class User extends Authenticatable implements JWTSubject
     {
         return $this->hasMany(AdopHistory::class);
     }
-    
+
 
     public function adopt()
     {
@@ -109,11 +109,11 @@ class User extends Authenticatable implements JWTSubject
 
     public function followers()
     {
-        return $this->belongsToMany(User::class, 'follower_user', 'following_id', 'follower_id')->where('banned', '==', null);
+        return $this->belongsToMany(User::class, 'follower_user', 'following_id', 'follower_id')->where('banned', '=', null);
     }
 
     public function following()
     {
-        return $this->belongsToMany(User::class, 'follower_user', 'follower_id', 'following_id')->where('banned', '==', null);
+        return $this->belongsToMany(User::class, 'follower_user', 'follower_id', 'following_id')->where('banned', '=', null);
     }
 }
