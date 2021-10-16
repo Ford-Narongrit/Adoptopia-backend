@@ -2,9 +2,11 @@
 
 namespace App\Http\Controllers;
 
+use App\Http\Requests\TradeRequest;
 use Illuminate\Http\Request;
 use App\Models\Trade;
 use App\Models\Adopt;
+use Illuminate\Support\Facades\Validator;
 use Tymon\JWTAuth\Facades\JWTAuth;
 use Tymon\JWTAuth\Exceptions\JWTException;
 
@@ -47,8 +49,13 @@ class TradeController extends Controller
      * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\Response
      */
-    public function store(Request $request)
+    public function store(TradeRequest $request)
     {
+        $validator = Validator::make($request->all(), $request->rules(), $request->messages());
+        if ($validator->fails()) {
+            return response()->json($validator->errors());
+        }
+
         $trades = new Trade();
         $user = JWTAuth::user();
         $trades->user_id = $user->id;
