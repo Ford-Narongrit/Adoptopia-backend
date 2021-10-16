@@ -62,10 +62,10 @@ Route::post('/files/upload/{dir}', [UploadFileController::class, 'store']);
 //Notification Route
 Route::prefix('notification')->group(function () {
     Route::apiResource('', NotificationController::class);
-    Route::put('updateStatus', [NotificationController::class, 'updateStatus']);
+    Route::put('me/updateStatus', [NotificationController::class, 'updateStatus']);
     Route::post('sale-notification/{id}', [NotificationController::class, 'saleNotification']);
-    Route::get('unseen', [NotificationController::class, 'unseen']);
-    Route::get('seen', [NotificationController::class, 'seen']);
+    Route::get('me/unseen', [NotificationController::class, 'unseen']);
+    Route::get('me/seen', [NotificationController::class, 'seen']);
 });
 
 //Auth Route
