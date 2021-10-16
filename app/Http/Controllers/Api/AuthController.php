@@ -44,15 +44,15 @@ class AuthController extends Controller
         ]);
 
         if ($validator->fails()) {
-            return response()->json($validator->errors(), 422);
+            return response()->json(['validator' => $validator->errors(), 'error' => 'Sorry, an unexpected error occurred. Please try again.'], 422);
         }
 
         if (!$token = JWTAuth::attempt($request->only($login_type, 'password'))) {
-            return response()->json(['error' => 'Unauthorized'], 401);
+            return response()->json(['error' => 'Incorrect username, email  or password. Please try again.'], 401);
         }
 
-        if (JWTAuth::user()->isBanned()){
-            return response()->json(['error' => 'Banned'], 423);
+        if (JWTAuth::user()->isBanned()) {
+            return response()->json(['error' => 'Your Account has been Banned'], 423);
         }
         return $this->respondWithToken($token);
     }
