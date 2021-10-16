@@ -23,7 +23,7 @@ class CreatePaymentHistoriesTable extends Migration
             $table->timestamps();
             $table->softDeletes();
             $table->foreign('user_id')->references('id')->on('users');
-            // $table->foreign('trans_user')->references('user_id')->on('trader_coin');
+            $table->foreign('trans_user')->references('id')->on('users');
             // $table->foreign('post_id')->references('id')->on('trader_coin');
         });
     }
