@@ -5,6 +5,7 @@ use App\Http\Controllers\AdoptController;
 use App\Http\Controllers\NotificationController;
 use App\Http\Controllers\UploadFileController;
 use App\Http\Controllers\Api\PaymentHistoryController;
+use App\Http\Controllers\Api\AdopHistoryController;
 use App\Http\Controllers\CategoryController;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
@@ -49,6 +50,8 @@ Route::get('/user/notification/{id}' , [UserController::class , 'notification'])
 Route::apiResource('/notification', NotificationController::class);
 
 Route::apiResource('/payment-histories', PaymentHistoryController::class);
+
+Route::apiResource('/adop-histories', AdopHistoryController::class);
 
 Route::apiResource('/adopt', AdoptController::class);
 

@@ -26,4 +26,7 @@ class Adopt extends Model
     public function ota_sug(){
         return $this->hasMany(OtaSug::class);
     }
+    public function adoptHistories() {
+        return $this->hasMany(AdopHistory::class);
+    }
 }
