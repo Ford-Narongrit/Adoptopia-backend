@@ -23,6 +23,8 @@ class CreateUsersTable extends Migration
             $table->longText('description')->nullable();
             $table->double('coin')->default(0);
             $table->string('email')->unique();
+            $table->timestamp('banned')->nullable();
+            $table->enum('role', ['ADMIN', 'USER'])->default('user');
             $table->timestamp('email_verified_at')->nullable();
             $table->rememberToken();
             $table->timestamps();

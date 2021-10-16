@@ -17,13 +17,17 @@ class UserController extends Controller
     {
         $this->middleware('auth:api');
     }
+
     /**
      * Display a listing of the resource.
      *
-     * @return \Illuminate\Http\Response
+     * @return User[]|\Illuminate\Database\Eloquent\Collection|\Illuminate\Http\JsonResponse
      */
     public function index()
     {
+        if (!JWTAuth::user()->isAdmin()) {
+            return response()->json(['error' => 'Banned'], 423);
+        }
         $user = User::all();
         return $user;
     }
@@ -43,11 +47,18 @@ class UserController extends Controller
      * Display the specified resource.
      *
      * @param int $id
-     * @return \Illuminate\Http\Response
+     * @return \Illuminate\Http\JsonResponse
      */
-    public function show($id)
+    public function show($slug)
     {
-        $user = User::findOrFail($id);
+        $owner = JWTAuth::user();
+        $user = User::where('username', $slug)->with(['followers', 'following'])->first();
+        if ($owner->id == $user->id) {
+            $user->setAttribute('isOwner', true);
+        }
+        else{
+            $user->setAttribute('isOwner', false);
+        }
         return $user;
     }
 
@@ -87,6 +98,7 @@ class UserController extends Controller
         $user->save();
         return $user;
     }
+    
     public function earn(TopupRequest $request)
     {
         $validator = Validator::make($request->all(), $request->rules(), $request->messages());
@@ -99,6 +111,7 @@ class UserController extends Controller
         $user->save();
         return $user;
     }
+
     public function withdraw(WithdrawRequest $request)
     {
         $user = JWTAuth::user();
@@ -110,6 +123,7 @@ class UserController extends Controller
         $user->save();
         return $user;
     }
+
     public function notification($id)
     {
         $user = Notification::where('user_id', $id)->orderBy('created_at', 'desc')->get();

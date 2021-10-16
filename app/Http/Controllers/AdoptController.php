@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Http\Requests\AdoptRequest;
 use App\Http\Resources\AdoptResource;
+use App\Models\User;
 use Illuminate\Http\Request;
 use App\Models\Adopt;
 use App\Models\AdoptImage;
@@ -23,6 +24,13 @@ class AdoptController extends Controller
     public function index()
     {
         $user = JWTAuth::user();
+        $adopts = $user->adopt->load(['adopt_image', 'category']);
+        return $adopts;
+    }
+
+    public function getAllUserAdop($slug)
+    {
+        $user = User::where('username', $slug)->first();
         $adopts = $user->adopt->load(['adopt_image', 'category']);
         return $adopts;
     }

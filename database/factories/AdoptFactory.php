@@ -25,10 +25,11 @@ class AdoptFactory extends Factory
     {
         $name = $this->faker->name();
         return [
-            
+
             'name' => $name,
             'agreement' => $this->faker->realText(),
             'user_id' => User::get()->pluck('id')->random(),
+            
 
         ];
     }

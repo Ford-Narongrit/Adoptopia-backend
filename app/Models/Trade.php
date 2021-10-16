@@ -22,4 +22,7 @@ class Trade extends Model
     public function ota_sug(){
         return $this->hasMany(OtaSug::class);
     }
+    public function noti(){
+        return $this->hasMany(Notification::class);
+    }
 }

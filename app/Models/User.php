@@ -54,6 +54,7 @@ class User extends Authenticatable implements JWTSubject
     {
         return $this->hasMany(Notification::class);
     }
+
     public function paymentHistories()
     {
         return $this->hasMany(PaymentHistory::class);
@@ -63,6 +64,7 @@ class User extends Authenticatable implements JWTSubject
         return $this->hasMany(AdopHistory::class);
     }
     
+
     public function adopt()
     {
         return $this->hasMany(Adopt::class);
@@ -93,5 +95,25 @@ class User extends Authenticatable implements JWTSubject
         return [
             'name' => $this->name
         ];
+    }
+
+    public function isBanned()
+    {
+        return $this->banned != null;
+    }
+
+    public function isAdmin()
+    {
+        return $this->role == "ADMIN";
+    }
+
+    public function followers()
+    {
+        return $this->belongsToMany(User::class, 'follower_user', 'following_id', 'follower_id')->withTimestamps();
+    }
+
+    public function following()
+    {
+        return $this->belongsToMany(User::class, 'follower_user', 'follower_id', 'following_id')->withTimestamps();
     }
 }
