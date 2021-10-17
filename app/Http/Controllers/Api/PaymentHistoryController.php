@@ -19,18 +19,15 @@ class PaymentHistoryController extends Controller
     public function index()
     {
         $user = JWTAuth::user();
-        
-        $paymentHistory = $user->paymentHistories()->paginate(10);
+        $paymentHistory = $user->paymentHistories()->orderBy('created_at', 'desc')->paginate(10);
         
         return new PaymentHistoryCollection($paymentHistory);
-        // return response()->json($paymentHistory);
     }
 
     public function store(Request $request)
     {
         $paymentHistory = new PaymentHistory();
         $user = JWTAuth::user();
-        // $paymentHistory->post_id = $request->post_id;
         $status = $request->status;
         $amount = floatval($request->amount);
         if($amount && intval($amount) != $amount){
