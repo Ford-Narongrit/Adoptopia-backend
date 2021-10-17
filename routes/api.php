@@ -47,7 +47,8 @@ Route::apiResource('/adopt', AdoptController::class);
 //Trade
 Route::put('/trade/sell/{id}', [TradeController::class, 'sell']);
 Route::put('/trade/close_sale/{id}', [TradeController::class, 'close_sale']);
-Route::delete('/trade', [TradeController::class, 'destroy']);
+Route::put('/trade/edit/{id}/{price}', [TradeController::class, 'edit']);
+Route::delete('/trade/delete/{id}', [TradeController::class, 'destroy']);
 Route::apiResource('/trade', TradeController::class);
 
 //Other
