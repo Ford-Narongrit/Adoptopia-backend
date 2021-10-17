@@ -72,7 +72,7 @@ class AdopHistoryController extends Controller
         $dateFrom = new Carbon($request->dateFrom);
         $dateTo = Carbon::createFromFormat('Y-m-d', $request->dateTo)->endOfDay()->toDateTimeString();
         $user = JWTAuth::user();
-        if($request->status != 'all') {
+        if($request->status != 'All') {
             $status = $request->status;
             $adopHistory = $user->adopHistories()->where('status', '=', $status)
                                 ->whereBetween('created_at', [$dateFrom, $dateTo])
