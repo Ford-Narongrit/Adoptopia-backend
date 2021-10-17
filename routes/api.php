@@ -49,6 +49,7 @@ Route::delete('/trade/delete/{id}', [TradeController::class, 'destroy']);
 Route::apiResource('/trade', TradeController::class);
 
 //Other
+Route::post('/adop-histories/search', [AdopHistoryController::class, 'search']);
 Route::apiResource('/adop-histories', AdopHistoryController::class);
 Route::post('/payment-histories/search', [PaymentHistoryController::class, 'search']);
 Route::apiResource('/payment-histories', PaymentHistoryController::class);
