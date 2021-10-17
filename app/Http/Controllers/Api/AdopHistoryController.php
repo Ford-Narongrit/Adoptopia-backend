@@ -10,6 +10,9 @@ use Illuminate\Http\Request;
 use Tymon\JWTAuth\Facades\JWTAuth;
 use App\Http\Resources\AdopHistoryResource;
 use App\Http\Resources\AdopHistoryCollection;
+use Carbon\Carbon;
+use Illuminate\Support\Facades\Validator;
+use App\Http\Requests\HistorySearchRequest;
 
 class AdopHistoryController extends Controller
 {
@@ -57,6 +60,30 @@ class AdopHistoryController extends Controller
         }
         $adopHistory->save();
         $adopHistory2->save();
+    }
+
+    public function search(HistorySearchRequest $request) {
+
+        $validator = Validator::make($request->all(), $request->rules(), $request->messages());
+        if ($validator->fails()) {
+            return response()->json($validator->errors());
+        }
+
+        $dateFrom = new Carbon($request->dateFrom);
+        $dateTo = Carbon::createFromFormat('Y-m-d', $request->dateTo)->endOfDay()->toDateTimeString();
+        $user = JWTAuth::user();
+        if($request->status != 'All') {
+            $status = $request->status;
+            $adopHistory = $user->adopHistories()->where('status', '=', $status)
+                                ->whereBetween('created_at', [$dateFrom, $dateTo])
+                                ->orderBy('created_at', 'desc')->paginate(10);
+        }
+        else {
+            $adopHistory = $user->adopHistories()
+                                ->whereBetween('created_at', [$dateFrom, $dateTo])
+                                ->orderBy('created_at', 'desc')->paginate(10);
+        }
+        return new AdopHistoryCollection($adopHistory);
     }
 
     public function destroy(AdopHistory $adopHistory)
