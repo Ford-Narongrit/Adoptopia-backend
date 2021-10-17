@@ -44,8 +44,7 @@ Route::apiResource('/adopt', AdoptController::class);
 //Trade
 Route::put('/trade/sell/{id}', [TradeController::class, 'sell']);
 Route::put('/trade/close_sale/{id}', [TradeController::class, 'close_sale']);
-Route::put('/trade/edit/{id}/{price}', [TradeController::class, 'edit']);
-Route::delete('/trade/delete/{id}', [TradeController::class, 'destroy']);
+Route::delete('/trade', [TradeController::class, 'destroy']);
 Route::apiResource('/trade', TradeController::class);
 
 //Other
@@ -63,6 +62,7 @@ Route::prefix('notification')->group(function () {
     Route::post('sale-notification/{id}', [NotificationController::class, 'saleNotification']);
     Route::get('me/unseen', [NotificationController::class, 'unseen']);
     Route::get('me/seen', [NotificationController::class, 'seen']);
+    Route::get('{slug}/follow', [NotificationController::class, 'followNotification']);
 });
 
 //Auth Route
