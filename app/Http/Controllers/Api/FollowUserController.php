@@ -4,6 +4,7 @@ namespace App\Http\Controllers\Api;
 
 use App\Http\Controllers\Controller;
 use App\Models\FollowerUser;
+use App\Models\Notification;
 use App\Models\User;
 use Carbon\Carbon;
 use Illuminate\Http\Request;
@@ -34,6 +35,15 @@ class FollowUserController extends Controller
             'following_id' => $following->id,
             'accepted_at' => Carbon::now(),
         ]);
+
+        // save notification
+        $notification = new Notification();
+        $notification->text = $follower->name." started following you.";
+        $notification->owner_id = $following->id;
+        $notification->user_id = $follower->id;
+        $notification->trade_id = null;
+        $notification->save();
+
         return $followUser;
     }
 

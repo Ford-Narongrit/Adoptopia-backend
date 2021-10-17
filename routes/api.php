@@ -63,7 +63,6 @@ Route::prefix('notification')->group(function () {
     Route::post('sale-notification/{id}', [NotificationController::class, 'saleNotification']);
     Route::get('me/unseen', [NotificationController::class, 'unseen']);
     Route::get('me/seen', [NotificationController::class, 'seen']);
-    Route::get('{slug}/follow', [NotificationController::class, 'followNotification']);
 });
 
 //Auth Route
