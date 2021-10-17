@@ -14,6 +14,6 @@ class ReportPost extends Model
     }
 
     public function post(){
-        return $this->belongsTo(Trade::class, 'post_id','id');
+        return $this->belongsTo(Trade::class, 'post_id','id')->withTrashed();
     }
 }

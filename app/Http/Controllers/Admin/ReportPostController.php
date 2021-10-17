@@ -25,7 +25,11 @@ class ReportPostController extends Controller
         if (!JWTAuth::user()->isAdmin()) {
             return response()->json(['error' => 'Only Admin'], 423);
         }
-        return ReportPost::with(['reportBy', 'user'])->get();
+        $reportPost = ReportPost::with(['reportBy', 'post'])->get();
+        $reportPost->map(function ($trade) {
+            $trade->post->load(['adopt']);
+        });
+        return $reportPost;
     }
 
     /**
@@ -66,7 +70,7 @@ class ReportPostController extends Controller
         if (!JWTAuth::user()->isAdmin()) {
             return response()->json(['error' => 'Only Admin'], 423);
         }
-        return ReportPost::with(['reportBy', 'user'])->findOrFail($id);
+        return ReportPost::with(['reportBy', 'post'])->findOrFail($id);
     }
 
     /**
