@@ -10,6 +10,8 @@ use Tymon\JWTAuth\Facades\JWTAuth;
 use App\Http\Resources\PaymentHistoryResource;
 use App\Http\Resources\PaymentHistoryCollection;
 use Carbon\Carbon;
+use Illuminate\Support\Facades\Validator;
+use App\Http\Requests\HistorySearchRequest;
 
 class PaymentHistoryController extends Controller
 {
@@ -55,9 +57,14 @@ class PaymentHistoryController extends Controller
         $paymentHistory->save();
     }
 
-    public function search(Request $request) {
+    public function search(HistorySearchRequest $request) {
         // $dateFrom = $request->dateFrom;
         // $dateTo = $request->dateTo;
+        $validator = Validator::make($request->all(), $request->rules(), $request->messages());
+        if ($validator->fails()) {
+            return response()->json($validator->errors());
+        }
+
         $dateFrom = new Carbon($request->dateFrom);
         $dateTo = Carbon::createFromFormat('Y-m-d', $request->dateTo)->endOfDay()->toDateTimeString();
         $user = JWTAuth::user();
