@@ -19,7 +19,7 @@ class CreateNotificationsTable extends Migration
             $table->enum('status', ['seen', 'unseen'])->default('unseen');
             $table->unsignedBigInteger('user_id');
             $table->unsignedBigInteger('owner_id');
-            $table->unsignedBigInteger('trade_id');
+            $table->unsignedBigInteger('trade_id')->nullable();
             $table->timestamps();
             $table->softDeletes();
 

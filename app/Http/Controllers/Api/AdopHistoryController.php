@@ -20,8 +20,7 @@ class AdopHistoryController extends Controller
     public function index()
     {
         $user = JWTAuth::user();
-        
-        $adopHistory = $user->adopHistories()->paginate(10);
+        $adopHistory = $user->adopHistories()->orderBy('created_at', 'desc')->paginate(10);
         
         return new AdopHistoryCollection($adopHistory);
     }
