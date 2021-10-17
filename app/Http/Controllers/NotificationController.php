@@ -38,7 +38,6 @@ class NotificationController extends Controller
     {
         $notification = Notification::where('user_id', $id)->orderBy('created_at', 'desc')->get();
         return $notification;
-        return $notification;
     }
 
     public function update(Request $request, $id)

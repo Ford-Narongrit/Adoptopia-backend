@@ -33,9 +33,6 @@ Route::put('/spend' , [UserController::class , 'withdraw']);
 Route::put('/earn' , [UserController::class , 'earn']);
 
 Route::get('/user/owner/{id}' , [UserController::class , 'showOwner']);
-Route::get('/user/notification/{id}' , [UserController::class , 'notification']);
-
-Route::apiResource('/notification', NotificationController::class);
 
 //Adopt
 Route::put('/adopt/transfer/{id}/{transfer_id}', [AdoptController::class, 'transfer']);
@@ -62,10 +59,10 @@ Route::post('/files/upload/{dir}', [UploadFileController::class, 'store']);
 //Notification Route
 Route::prefix('notification')->group(function () {
     Route::apiResource('', NotificationController::class);
-    Route::put('updateStatus', [NotificationController::class, 'updateStatus']);
+    Route::put('me/updateStatus', [NotificationController::class, 'updateStatus']);
     Route::post('sale-notification/{id}', [NotificationController::class, 'saleNotification']);
-    Route::get('unseen', [NotificationController::class, 'unseen']);
-    Route::get('seen', [NotificationController::class, 'seen']);
+    Route::get('me/unseen', [NotificationController::class, 'unseen']);
+    Route::get('me/seen', [NotificationController::class, 'seen']);
 });
 
 //Auth Route
