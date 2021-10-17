@@ -50,6 +50,7 @@ Route::apiResource('/trade', TradeController::class);
 
 //Other
 Route::apiResource('/adop-histories', AdopHistoryController::class);
+Route::post('/payment-histories/search', [PaymentHistoryController::class, 'search']);
 Route::apiResource('/payment-histories', PaymentHistoryController::class);
 Route::apiResource('/category', CategoryController::class);
 Route::apiResource('/dta-sug', DtaSugController::class);
