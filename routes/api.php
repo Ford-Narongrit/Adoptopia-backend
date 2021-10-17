@@ -46,6 +46,7 @@ Route::put('/trade/sell/{id}', [TradeController::class, 'sell']);
 Route::put('/trade/close_sale/{id}', [TradeController::class, 'close_sale']);
 Route::delete('/trade', [TradeController::class, 'destroy']);
 Route::apiResource('/trade', TradeController::class);
+Route::get('/trade/{slug}/post', [TradeController::class, 'userPost']);
 
 //Other
 Route::apiResource('/adop-histories', AdopHistoryController::class);
