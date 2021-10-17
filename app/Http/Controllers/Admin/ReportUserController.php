@@ -61,7 +61,7 @@ class ReportUserController extends Controller
      * Display the specified resource.
      *
      * @param \App\Models\ReportUser $reportUser
-     * @return \Illuminate\Http\JsonResponse
+     * @return \Illuminate\Database\Eloquent\Builder|\Illuminate\Database\Eloquent\Builder[]|\Illuminate\Database\Eloquent\Collection|\Illuminate\Database\Eloquent\Model|\Illuminate\Http\JsonResponse
      */
     public function show($id)
     {

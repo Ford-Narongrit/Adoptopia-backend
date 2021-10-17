@@ -6,6 +6,7 @@ use App\Models\Adopt;
 use Illuminate\Http\Request;
 use App\Models\Notification;
 use App\Models\Trade;
+use App\Models\User;
 use Tymon\JWTAuth\Facades\JWTAuth;
 
 class NotificationController extends Controller
@@ -91,6 +92,23 @@ class NotificationController extends Controller
         $notification->owner_id = $trade->user_id;
         $notification->user_id = $user->id;
         $notification->trade_id = $trade->id;
+        $notification->save();
+
+        return $notification;
+    }
+
+    public function followNotification($slug){
+        $user = JWTAuth::user();
+
+        $own_user = User::where('username', $slug)->first();
+
+
+        // save notification
+        $notification = new Notification();
+        $notification->text = $user->name." started following you.";
+        $notification->owner_id = $own_user->id;
+        $notification->user_id = $user->id;
+        $notification->trade_id = null;
         $notification->save();
 
         return $notification;

@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Http\Requests\TradeRequest;
+use App\Models\User;
 use Illuminate\Http\Request;
 use App\Models\Trade;
 use App\Models\Adopt;
@@ -12,7 +13,8 @@ use Tymon\JWTAuth\Exceptions\JWTException;
 
 class TradeController extends Controller
 {
-    public function __construct(){
+    public function __construct()
+    {
         $this->middleware('auth:api');
     }
 
@@ -24,10 +26,10 @@ class TradeController extends Controller
     public function index()
     {
         $trades = Trade::get();
-        $trades->map(function ($trade){
+        $trades->map(function ($trade) {
             return collect($trade->adopt
-            ->load(['adopt_image', 'category']))
-            ->all();
+                ->load(['adopt_image', 'category']))
+                ->all();
         });
 
         return $trades;
@@ -46,7 +48,7 @@ class TradeController extends Controller
     /**
      * Store a newly created resource in storage.
      *
-     * @param  \Illuminate\Http\Request  $request
+     * @param \Illuminate\Http\Request $request
      * @return \Illuminate\Http\Response
      */
     public function store(TradeRequest $request)
@@ -71,7 +73,7 @@ class TradeController extends Controller
     /**
      * Display the specified resource.
      *
-     * @param  int  $id
+     * @param int $id
      * @return \Illuminate\Http\Response
      */
     public function show($id)
@@ -84,7 +86,7 @@ class TradeController extends Controller
     /**
      * Show the form for editing the specified resource.
      *
-     * @param  int  $id
+     * @param int $id
      * @return \Illuminate\Http\Response
      */
     public function edit($id, $price)
@@ -98,8 +100,8 @@ class TradeController extends Controller
     /**
      * Update the specified resource in storage.
      *
-     * @param  \Illuminate\Http\Request  $request
-     * @param  int  $id
+     * @param \Illuminate\Http\Request $request
+     * @param int $id
      * @return \Illuminate\Http\Response
      */
     public function update(Request $request, $id)
@@ -110,18 +112,34 @@ class TradeController extends Controller
     /**
      * Remove the specified resource from storage.
      *
-     * @param  int  $id
+     * @param int $id
      * @return \Illuminate\Http\Response
      */
-    public function close_sale($id){
+    public function close_sale($id)
+    {
         $trades = Trade::findOrFail($id);
         $trades->status = "off";
         $trades->save();
         return $trades;
     }
+
     public function destroy($id)
     {
         $trades = Trade::findOrFail($id);
         $trades->delete();
+    }
+
+    public function userPost($slug)
+    {
+        $user = User::where('username', $slug)->first();
+        $trades = Trade::where('user_id', $user->id)
+            ->orderBy('created_at', 'desc')->get();
+
+        $trades->map(function ($trade) {
+            $trade->load(['user']);
+            $trade->adopt->load(['adopt_image', 'category']);
+        });
+        return $trades;
+
     }
 }

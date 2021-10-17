@@ -21,7 +21,7 @@ class CreateReportPostsTable extends Migration
             $table->timestamps();
 
             $table->foreign('reported_by')->references('id')->on('users');
-//TODO            $table->foreign('post_id')->references('id')->on('users');
+            $table->foreign('post_id')->references('id')->on('trades');
         });
     }
 

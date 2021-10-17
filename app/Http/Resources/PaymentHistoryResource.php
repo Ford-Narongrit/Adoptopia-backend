@@ -15,13 +15,18 @@ class PaymentHistoryResource extends JsonResource
         $counterPartyId = $this->trans_user;
         if(!$counterPartyId){
             $counterUsername = "-";
-            $description = "You ". $status ." ". $amount . " baht."; 
+            $description = "You ". $status ." ". $amount . " coin."; 
         }
         else {
             $counterParty = User::findOrFail($counterPartyId);
             $counterUsername = $counterParty->username;
             $status === "earn" ? $pepo = "from" : $pepo = "to";
-            $description = "You ". $status ."ed ". $amount . " baht " . $pepo ." ". $counterUsername; 
+            if($status === "spend"){
+                $description = "You spent ". $amount . " coin " . $pepo ." buy ". $counterUsername. "'s adop"; 
+            }
+            else{
+                $description = "You ". $status ."ed ". $amount . " coin " . $pepo ." ". $counterUsername; 
+            }
         }
             
         return [
