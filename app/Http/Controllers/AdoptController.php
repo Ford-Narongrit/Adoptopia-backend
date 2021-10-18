@@ -37,10 +37,12 @@ class AdoptController extends Controller
 
     public function store(AdoptRequest $request)
     {
+
         $validator = Validator::make($request->all(), $request->rules(), $request->messages());
         if ($validator->fails()) {
             return response()->json($validator->errors());
         }
+
         $adopt = new Adopt();
         $adopt->name = $request->name;
         $adopt->agreement = $request->agreement;
@@ -49,12 +51,17 @@ class AdoptController extends Controller
         $adopt->status = 0;
         $catArr = [];
 
-        foreach ($request->category as $category_id) {
-            array_push($catArr, $category_id);
+
+        foreach ($request->category as $cat) {
+            $newCategory = Category::firstOrCreate(
+                ['name' =>  trim($cat)]
+            );
+            array_push($catArr, $newCategory->id);
         }
         $adopt->save();
         // save in pivot table
         $adopt->category()->attach($catArr);
+
 
         $arrImage = [];
         if ($request->hasfile('images')) {
