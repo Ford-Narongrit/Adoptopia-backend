@@ -1,0 +1,53 @@
+version: "3.7"
+
+networks:
+  adoptopia:
+    driver: bridge
+
+services:
+  nginx:
+    image: nginx:stable-alpine
+    container_name: adoptopia-nginx
+    ports:
+      - "8088:80"
+    volumes:
+      - ./project:/var/www/html
+      - ./nginx/default.conf:/etc/nginx/conf.d/default.conf
+    depends_on:
+      - php
+      - mysql
+    networks:
+      - adoptopia
+
+  mysql:
+    image: mysql:5.7.22
+    container_name: adoptopia-database
+    restart: unless-stopped
+    tty: true
+    ports:
+      - "3306:3306"
+    volumes:
+      - ./mysql:/var/lib/mysql
+    environment:
+      MYSQL_DATABASE: adoptopia
+      MYSQL_USER: admin
+      MYSQL_PASSWORD: secret
+      MYSQL_ROOT_PASSWORD: secret
+      SERVICE_TAGS: dev
+      SERVICE_NAME: mysql
+    networks:
+      - adoptopia
+
+  php:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    container_name: adoptopia-app
+    restart: unless-stopped
+    tty: true
+    volumes:
+      - ./project:/var/www/html
+    ports:
+      - "9000:9000"
+    networks:
+      - adoptopia
