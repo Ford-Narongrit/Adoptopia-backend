@@ -27,12 +27,12 @@ use App\Http\Controllers\OtaSugController;
 
 //user
 Route::apiResource('/user', UserController::class);
-Route::put('/deposit' , [UserController::class , 'deposit']);
-Route::put('/withdraw' , [UserController::class , 'withdraw']);
-Route::put('/spend' , [UserController::class , 'withdraw']);
-Route::put('/earn' , [UserController::class , 'earn']);
+Route::put('/deposit', [UserController::class, 'deposit']);
+Route::put('/withdraw', [UserController::class, 'withdraw']);
+Route::put('/spend', [UserController::class, 'withdraw']);
+Route::put('/earn', [UserController::class, 'earn']);
 
-Route::get('/user/owner/{id}' , [UserController::class , 'showOwner']);
+Route::get('/user/owner/{id}', [UserController::class, 'showOwner']);
 
 //Adopt
 Route::put('/adopt/transfer/{id}/{transfer_id}', [AdoptController::class, 'transfer']);
@@ -49,12 +49,15 @@ Route::delete('/trade/delete/{id}', [TradeController::class, 'destroy']);
 Route::apiResource('/trade', TradeController::class);
 Route::get('/trade/{slug}/post', [TradeController::class, 'userPost']);
 
+//Category
+Route::apiResource('/category', CategoryController::class);
+Route::post('/category/search', [CategoryController::class, 'searchCategory']);
+
 //Other
 Route::post('/adop-histories/search', [AdopHistoryController::class, 'search']);
 Route::apiResource('/adop-histories', AdopHistoryController::class);
 Route::post('/payment-histories/search', [PaymentHistoryController::class, 'search']);
 Route::apiResource('/payment-histories', PaymentHistoryController::class);
-Route::apiResource('/category', CategoryController::class);
 Route::apiResource('/dta-sug', DtaSugController::class);
 Route::apiResource('/ota-sug', OtaSugController::class);
 Route::post('/files/upload/{dir}', [UploadFileController::class, 'store']);

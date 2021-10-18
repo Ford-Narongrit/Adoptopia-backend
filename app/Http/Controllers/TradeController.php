@@ -15,17 +15,19 @@ class TradeController extends Controller
 {
     public function __construct()
     {
-        $this->middleware('auth:api');
+        $this->middleware('auth:api', [
+            'except' => ['index']
+        ]);
     }
 
     /**
      * Display a listing of the resource.
      *
-     * @return \Illuminate\Http\Response
+     * @return \Illuminate\Database\Eloquent\Builder[]|\Illuminate\Database\Eloquent\Collection|\Illuminate\Http\Response
      */
     public function index()
     {
-        $trades = Trade::get();
+        $trades = Trade::with('user')->get();
         $trades->map(function ($trade) {
             return collect($trade->adopt
                 ->load(['adopt_image', 'category']))

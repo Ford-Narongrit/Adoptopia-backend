@@ -17,8 +17,8 @@ class CategoryController extends Controller
     /**
      * Store a newly created resource in storage.
      *
-     * @param  \Illuminate\Http\Request  $request
-     * @return \Illuminate\Http\Response
+     * @param \Illuminate\Http\Request $request
+     * @return Category
      */
     public function store(Request $request)
     {
@@ -32,7 +32,7 @@ class CategoryController extends Controller
     /**
      * Display the specified resource.
      *
-     * @param  int  $id
+     * @param int $id
      * @return \Illuminate\Http\Response
      */
     public function show($id)
@@ -44,15 +44,15 @@ class CategoryController extends Controller
     /**
      * Update the specified resource in storage.
      *
-     * @param  \Illuminate\Http\Request  $request
-     * @param  int  $id
+     * @param \Illuminate\Http\Request $request
+     * @param int $id
      * @return \Illuminate\Http\Response
      */
     public function update(Request $request, $id)
     {
         $category = Category::findOrFail($id);
-        if($request->name !== null){
-            $category->name =  $request->name;
+        if ($request->name !== null) {
+            $category->name = $request->name;
         }
         $category->save();
         return $category;
@@ -61,12 +61,20 @@ class CategoryController extends Controller
     /**
      * Remove the specified resource from storage.
      *
-     * @param  int  $id
+     * @param int $id
      * @return \Illuminate\Http\Response
      */
     public function destroy($id)
     {
         $category = Category::findOrFail($id);
         $category->delete();
+    }
+
+    public function searchCategory(Request $request)
+    {
+        $categories = Category::get();
+        if (!empty($request->slug))
+            $categories = Category::where('name', "Like", "%" . $request->slug . "%")->get();
+        return $categories;
     }
 }
