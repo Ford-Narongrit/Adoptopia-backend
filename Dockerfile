@@ -1,6 +1,6 @@
 FROM php:7.4-fpm
 # Copy composer.lock and composer.json
-COPY src/composer.lock src/composer.json /var/www/
+COPY project/composer.lock project/composer.json /var/www/
 
 # Install dependencies
 RUN apt-get update && apt-get install -y \
