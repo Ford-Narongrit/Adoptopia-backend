@@ -33,6 +33,7 @@ Route::put('/spend', [UserController::class, 'withdraw']);
 Route::put('/earn', [UserController::class, 'earn']);
 
 Route::get('/user/owner/{id}', [UserController::class, 'showOwner']);
+Route::post('/search/user', [UserController::class, 'searchByUsername']);
 
 //Adopt
 Route::put('/adopt/transfer/{id}/{transfer_id}', [AdoptController::class, 'transfer']);

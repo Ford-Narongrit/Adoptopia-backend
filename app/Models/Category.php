@@ -10,6 +10,7 @@ class Category extends Model
 {
     use HasFactory , SoftDeletes;
 
+    protected $fillable = ['name'];
 
 
     public function adopt(){
