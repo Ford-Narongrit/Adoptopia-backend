@@ -15,7 +15,7 @@ class UserController extends Controller
 
     public function __construct()
     {
-        $this->middleware('auth:api');
+        $this->middleware('auth:api', ['except' => ['searchByUsername']]);
     }
 
     /**
@@ -26,7 +26,7 @@ class UserController extends Controller
     public function index()
     {
 
-        $user = User::where('username' , '!=' , 'Admin')->take(5)->get();
+        $user = User::where('username', '!=', 'Admin')->take(5)->get();
         return $user;
     }
 
@@ -51,13 +51,12 @@ class UserController extends Controller
     {
         $owner = JWTAuth::user();
         $user = User::where('username', $slug)->with(['followers', 'following'])->first();
-        if($user->banned != null && $owner->role != 'ADMIN'){
+        if ($user->banned != null && $owner->role != 'ADMIN') {
             return response()->json(['error' => 'Banned'], 423);
         }
         if ($owner->id == $user->id) {
             $user->setAttribute('isOwner', true);
-        }
-        else{
+        } else {
             $user->setAttribute('isOwner', false);
         }
         return $user;
@@ -125,19 +124,21 @@ class UserController extends Controller
         return $user;
     }
 
-    public function showOwner($id){
+    public function showOwner($id)
+    {
         $user = User::findOrFail($id);
         return $user;
     }
 
-    public function searchByUsername(Request $request ){
-        $user = User::where('username' , '!=' , 'Admin')->take(5)->get();
-        if(!empty($request->username)){
+    public function searchByUsername(Request $request)
+    {
+        $user = User::where('username', '!=', 'Admin')->take(5)->get();
+        if (!empty($request->username)) {
             $user = User::where([
-                ['username' , '!=' , 'Admin'],
-                ['username' , 'like' , $request->username.'%']
-                ])->take(5)->get();
-            }
+                ['username', '!=', 'Admin'],
+                ['username', 'like', $request->username . '%']
+            ])->take(5)->get();
+        }
         return $user;
     }
 
