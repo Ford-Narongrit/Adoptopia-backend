@@ -25,10 +25,8 @@ class UserController extends Controller
      */
     public function index()
     {
-        if (!JWTAuth::user()->isAdmin()) {
-            return response()->json(['error' => 'Banned'], 423);
-        }
-        $user = User::all();
+
+        $user = User::where('username' , '!=' , 'Admin')->take(5)->get();
         return $user;
     }
 
@@ -129,6 +127,17 @@ class UserController extends Controller
 
     public function showOwner($id){
         $user = User::findOrFail($id);
+        return $user;
+    }
+
+    public function searchByUsername(Request $request ){
+        $user = User::where('username' , '!=' , 'Admin')->take(5)->get();
+        if(!empty($request->username)){
+            $user = User::where([
+                ['username' , '!=' , 'Admin'],
+                ['username' , 'like' , $request->username.'%']
+                ])->take(5)->get();
+            }
         return $user;
     }
 
