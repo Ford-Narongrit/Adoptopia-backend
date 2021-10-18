@@ -27,7 +27,7 @@ class TradeController extends Controller
      */
     public function index()
     {
-        $trades = Trade::with('user')->get();
+        $trades = Trade::with('user')->get()->where('status', "on");
         $trades->map(function ($trade) {
             return collect($trade->adopt
                 ->load(['adopt_image', 'category']))
