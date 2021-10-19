@@ -15,7 +15,7 @@ class UserController extends Controller
 
     public function __construct()
     {
-        $this->middleware('auth:api', ['except' => ['searchByUsername', 'show']]);
+        $this->middleware('auth:api', ['except' => ['searchByUsername']]);
     }
 
     /**
@@ -51,15 +51,13 @@ class UserController extends Controller
     {
         $owner = JWTAuth::user();
         $user = User::where('username', $slug)->with(['followers', 'following'])->first();
-        if (!empty($owner)) {
-            if ($user->banned != null && $owner->role != 'ADMIN') {
-                return response()->json(['error' => 'Banned'], 423);
-            }
-            if ($owner->id == $user->id) {
-                $user->setAttribute('isOwner', true);
-            } else {
-                $user->setAttribute('isOwner', false);
-            }
+        if ($user->banned != null && $owner->role != 'ADMIN') {
+            return response()->json(['error' => 'Banned'], 423);
+        }
+        if ($owner->id == $user->id) {
+            $user->setAttribute('isOwner', true);
+        } else {
+            $user->setAttribute('isOwner', false);
         }
         return $user;
     }
