@@ -1,31 +1,28 @@
-# Adoptopoia-Backend
+# Adoptopia (Backend)
 
-> เว็บขายดีไซน์
+## version 1.1.0
 
--   API สำหรับ front-end => https://github.com/Ford-Narongrit/Adoptopia-frontend
+# เกี่ยวกับ project
 
-## version 1.0.0
+>
 
-## Public API
+## ผู้จัดทำ
 
-- `GET` `/api/user`
-- `GET` `/api/user/{id}`
+-   อารียา สังข์ทอง 6210400752
+-   นายชยางกูร ฤทธิเดช 6210402381
+-   นายณรงค์ฤทธ์ ธรรมปาโล 6210402402
+-   สิรวิชญ์ วงษ์ศุทธิภากร 6210406700
 
-## Auth API
-- `POST` `/api/auth/login`
-- `POST` `/api/auth/me`
+#
 
-ข้อมูลที่ต้องส่งมา
-```JSON
-body {
-    "validate": "",
-    "password": ""
-}
-```
+### Project-Adoptopia (frontend) => https://github.com/Ford-Narongrit/Adoptopia-frontend
 
-## Setup
+### Project-Adoptopia (Backend) => https://github.com/Ford-Narongrit/Adoptopia-backend
+
+# Project setup in Local
 
 ```bash
+composer install
 cp .env.example .env
 php artisan key:generate
 ```
@@ -42,14 +39,14 @@ php artisan migrate --seed
 php artisan storage:link
 ```
 
-## Development
-
-```bash
-composer install
-php artisan serve
-```
-
 ## create JWT
+
 ```bash
 php artisan jwt:secret
+```
+
+## Run Development
+
+```bash
+php artisan serve
 ```
