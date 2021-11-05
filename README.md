@@ -39,5 +39,6 @@ go to folder [project](https://github.com/Ford-Narongrit/Adoptopia-backend/tree/
 
 1. เข้าไปแก้ไข .env ให้ DB_HOST=mysql เพื่อเชื่อมกับ container mysql
 2. นำค่าของ environment ของ mysql มาใส่ลงใน .env (DB_DATABASE, DB_DATABASE, DB_PASSWORD)
-3. สั่ง ``docker-compose exec php php artisan migrate --seed`` เพื่อ migrate ตารางใน Mysql container
-4. ลองเรียก API 
+3. `docker-compose exec php php artisan storage:link`
+4. สั่ง ``docker-compose exec php php artisan migrate --seed`` เพื่อ migrate ตารางใน Mysql container
+5. ลองเรียก API 
