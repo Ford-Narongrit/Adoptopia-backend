@@ -2,10 +2,13 @@
 
 namespace Tests\Feature;
 
+use App\Models\FollowerUser;
 use App\Models\User;
+use Carbon\Carbon;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Illuminate\Foundation\Testing\WithFaker;
 use Illuminate\Support\Facades\Artisan;
+use Illuminate\Support\Facades\Http;
 use Tests\TestCase;
 
 class UserTest extends TestCase
@@ -34,15 +37,22 @@ class UserTest extends TestCase
         }
     }
 
-    public function test_example()
+    public function test_register()
     {
-        $response = $this->get('/');
-        $response->assertStatus(200);
+        $response = $this->post('/api/auth/register', [
+            'username' => "test03",
+            'password' => "secret123",
+            "password_confirmation" => "secret123",
+            "name" => "forddd",
+            "email" => "user03@webtect.ku"
+        ]);
+
+        $response->assertStatus(201);
     }
 
     public function test_login()
     {
-        $user = User::first();
+        $user = User::factory()->create(['password' => bcrypt('secret123')]);
         $response = $this->post('/api/auth/login', [
             'validate' => $user->username,
             'password' => "secret123"
@@ -51,16 +61,48 @@ class UserTest extends TestCase
         $response->assertStatus(200);
     }
 
-    public function test_register()
+    public function test_admin_ban()
     {
-        $response = $this->post('/api/auth/register', [
-            'username' => "test03",
-            'password' => "Ff_09107832",
-            "password_confirmation" => "Ff_09107832",
-            "name" => "forddd",
-            "email" => "user03@webtect.ku"
+        $user = User::factory()->create();
+        $admin = User::where('role', 'ADMIN')->first();
+        $response = $this->actingAs($admin, 'api')->post('/api/ban', [
+            'id' => $user->id
         ]);
+        $user = $user->fresh();
+        $this->assertNotNull($user->banned);
+    }
 
-        $response->assertStatus(201);
+
+    public function test_admin_unban()
+    {
+        $user = User::factory()->create(['banned' => Carbon::now()]);
+        $admin = User::where('role', 'ADMIN')->first();
+        $response = $this->actingAs($admin, 'api')->post('/api/unban', [
+            'id' => $user->id
+        ]);
+        $user = $user->fresh();
+        $this->assertNull($user->banned);
+    }
+
+    public function test_user_follow()
+    {
+        $user = User::factory()->create();
+        $user_follow_count = $user->following()->count();
+        $user2 = User::factory()->create();
+        $response = $this->actingAs($user, 'api')->post("/api/follow/{$user2->id}");
+
+
+        $this->assertEquals($user_follow_count + 1, User::where('id', $user->id)->with('following')->count());
+    }
+
+    public function test_user_unfollow()
+    {
+        $user = User::factory()->create();
+        $user2 = User::factory()->create();
+        $response = $this->actingAs($user, 'api')->post("/api/follow/{$user2->id}");
+        $user_follow_count = $user->following()->count();
+        $response = $this->actingAs($user, 'api')->delete("/api/follow/{$user2->id}");
+
+        $this->assertEquals($user_follow_count - 1, $user->following()->count());
     }
 }
